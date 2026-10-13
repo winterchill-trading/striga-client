@@ -198,7 +198,9 @@ val resend_otp
   -> challenge_id:string
   -> Common.Challenge.t Or_error.t Deferred.t
 
-(** [network] as in the docs' network table (e.g. ["Bitcoin"], ["Ethereum"]). *)
+(** [network] as in the docs' network table: [BTC], [ETH] (also USDC on Ethereum), [BSC],
+    [POLYGON] (POL, USDC_POLYGON), [SOL] (SOL, USDC_SOL). ["Ethereum"] is refused with
+    "Invalid network". *)
 val whitelist_address
   :  Transport.t
   -> user_id:string
