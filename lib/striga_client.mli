@@ -19,4 +19,5 @@ module Transaction = Transaction
 module Transport = Transport
 module User = User
 module Wallet = Wallet
+module Webhook = Webhook
 module Wire = Wire
