@@ -1,6 +1,15 @@
 (library
  (name striga_client_test)
- (libraries core core_unix async striga-client yojson uri cryptokit)
+ (libraries
+  core
+  core_unix
+  async
+  striga-client
+  yojson
+  uri
+  cryptokit
+  cohttp
+  cohttp-async)
  (inline_tests
   (deps
    (source_tree fixtures))
