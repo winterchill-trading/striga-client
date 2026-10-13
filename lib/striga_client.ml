@@ -9,6 +9,7 @@ module Redact = Redact
 module Sca = Sca
 module Secret = Secret
 module Signature = Signature
+module Simulator = Simulator
 module Standing_order = Standing_order
 module Tls = Tls
 module Totp = Totp
