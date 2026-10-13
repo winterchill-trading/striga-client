@@ -6,6 +6,7 @@ module Exchange = Exchange
 module Config = Config
 module Payment = Payment
 module Redact = Redact
+module Sca = Sca
 module Secret = Secret
 module Signature = Signature
 module Standing_order = Standing_order
