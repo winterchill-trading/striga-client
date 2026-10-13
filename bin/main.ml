@@ -519,7 +519,8 @@ module Pay_cmd = struct
       (let%map.Command user_id = user
        and address = P.flag "-address" (P.required P.string) ~doc:"ADDR destination"
        and currency = P.flag "-currency" (P.required P.string) ~doc:"CCY e.g. ETH"
-       and network = P.flag "-network" (P.required P.string) ~doc:"NET e.g. Ethereum"
+       and network =
+         P.flag "-network" (P.required P.string) ~doc:"NET BTC, ETH, BSC, POLYGON or SOL"
        and label = P.flag "-label" (P.optional P.string) ~doc:"TEXT unique label" in
        fun tr ->
          Payment.whitelist_address tr ~user_id ~address ~currency ~network ?label ())
