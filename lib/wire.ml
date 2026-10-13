@@ -28,6 +28,43 @@ module Hidden_string = struct
   let yojson_of_t = Ppx_yojson_conv_lib.Yojson_conv.yojson_of_string
 end
 
+module Raw_json = struct
+  type t = Yojson.Safe.t
+
+  let equal = Yojson.Safe.equal
+  let sexp_of_t t = Sexp.Atom (Yojson.Safe.to_string t)
+
+  let t_of_sexp = function
+    | Sexp.Atom s -> Yojson.Safe.from_string s
+    | sexp -> raise_s [%message "Raw_json.t_of_sexp: expected an atom" (sexp : Sexp.t)]
+  ;;
+
+  let t_of_yojson t = t
+  let yojson_of_t t = t
+end
+
+module Network_name = struct
+  type t = string [@@deriving sexp, equal]
+
+  let t_of_yojson (json : Yojson.Safe.t) =
+    match json with
+    | `String s -> s
+    | `Assoc fields ->
+      (match List.Assoc.find fields "name" ~equal:String.equal with
+       | Some (`String s) -> s
+       | _ ->
+         raise
+           (Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error
+              (Failure "network object without a name", json)))
+    | _ ->
+      raise
+        (Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error
+           (Failure "expected a network name or object", json))
+  ;;
+
+  let yojson_of_t t : Yojson.Safe.t = `String t
+end
+
 module Enum = struct
   module type Arg = sig
     type t

@@ -15,6 +15,19 @@ module Hidden_string : sig
   type t = string [@@deriving sexp_of, equal, yojson]
 end
 
+(** Arbitrary JSON kept as is, for sub-objects whose shape varies between endpoints
+    (e.g. a swap [order] carries strings in statements and objects in confirmations).
+    Sexps show the compact JSON text. *)
+module Raw_json : sig
+  type t = Yojson.Safe.t [@@deriving sexp, equal, yojson]
+end
+
+(** A blockchain network reference: statements send the network name as a string,
+    initiation responses send [{"name": ...}]. Decodes to the name, encodes as a string. *)
+module Network_name : sig
+  type t = string [@@deriving sexp, equal, yojson]
+end
+
 (** String enums with a catch-all, so a new value from Striga never fails a decode. *)
 module Enum : sig
   module type Arg = sig
