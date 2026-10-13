@@ -9,4 +9,5 @@ module Tls = Tls
 module Transaction = Transaction
 module Transport = Transport
 module User = User
+module Wallet = Wallet
 module Wire = Wire
