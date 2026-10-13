@@ -6,11 +6,19 @@ module Url = struct
   let sexp_of_t u = Sexp.Atom (Uri.to_string u)
 end
 
+(* The application id is not secret (accounts report it as [parentApplicationId]) but it
+   comes from the same credentials page, so it is shown only as set or unset. *)
+module Application_id = struct
+  type t = string
+
+  let sexp_of_t (_ : t) = Sexp.Atom "<set>"
+end
+
 type t =
   { base_url : Url.t
   ; api_key : Secret.t
   ; api_secret : Secret.t
-  ; application_id : string option
+  ; application_id : Application_id.t option
   ; ui_secret : Secret.t option
   ; live : bool
   }
