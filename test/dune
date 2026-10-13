@@ -1,0 +1,10 @@
+(library
+ (name striga_client_test)
+ (libraries core core_unix async striga-client yojson uri cryptokit)
+ (inline_tests
+  (deps
+   (source_tree fixtures))
+  (flags
+   (:standard -source-tree-root .)))
+ (preprocess
+  (pps ppx_jane ppx_yojson_conv)))

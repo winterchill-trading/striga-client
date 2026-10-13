@@ -1,0 +1,1 @@
+module Secret = Secret

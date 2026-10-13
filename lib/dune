@@ -1,0 +1,17 @@
+(library
+ (name striga_client)
+ (public_name striga-client)
+ (libraries
+  core
+  core_unix
+  async
+  cohttp
+  cohttp-async
+  conduit-async
+  async_ssl
+  uri
+  yojson
+  ppx_yojson_conv_lib
+  cryptokit)
+ (preprocess
+  (pps ppx_jane ppx_yojson_conv)))
