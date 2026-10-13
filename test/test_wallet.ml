@@ -175,7 +175,8 @@ let%expect_test "EUR enrichment and statement in the sandbox" =
           ~credit:(tx.credit : string option)
           ~debit:(tx.debit : string option)
           ~after:(Option.bind tx.balance_after ~f:(fun b -> b.amount) : string option)]);
-  [%expect {|
+  [%expect
+    {|
     ((iban (GB50000000000000002758)) (bic (SEOUGB21)) (provider (SIMULATOR))
      (status (ACTIVE)))
     ((type_ (Card_authorization)) (credit ()) (debit (1234)) (after (5766)))

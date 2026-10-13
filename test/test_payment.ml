@@ -173,7 +173,11 @@ let%expect_test "EUR walk in the sandbox: swap to USDC and SEPA payout, each wit
             (i.available_verification_methods : Common.Verification_method.t list option)]);
   List.iter [ "swap-confirm.json"; "sepa-confirm.json" ] ~f:(fun f ->
     let tx =
-      Fixture.roundtrip f Transaction.t_of_yojson Transaction.yojson_of_t Transaction.equal
+      Fixture.roundtrip
+        f
+        Transaction.t_of_yojson
+        Transaction.yojson_of_t
+        Transaction.equal
     in
     print_s
       [%message
@@ -183,7 +187,8 @@ let%expect_test "EUR walk in the sandbox: swap to USDC and SEPA payout, each wit
           ~before:(Option.bind tx.balance_before ~f:(fun b -> b.amount) : string option)
           ~after:(Option.bind tx.balance_after ~f:(fun b -> b.amount) : string option)
           ~order:(tx.order : Wire.Raw_json.t option)]);
-  [%expect {|
+  [%expect
+    {|
     (swap-init.json (type_ (Swap_currency_initiated)) (method_ (Sms))
      (methods ((Sms))))
     (sepa-init.json (type_ (Sepa_payout_initiated)) (method_ (Sms))
