@@ -144,3 +144,44 @@ let%expect_test "OTP confirmation of an interledger send (docs example)" =
       ("{\"price\":\"1\",\"debit\":{\"currency\":\"EUR\",\"amountFloat\":\"5\",\"amount\":500},\"credit\":{\"currency\":\"EUR\",\"amountFloat\":\"5\",\"amount\":500}}")))
     |}]
 ;;
+
+let%expect_test "EUR enrichment and statement in the sandbox" =
+  let e =
+    Fixture.roundtrip
+      "enrich-eur.json"
+      Wallet.Enrichment.t_of_yojson
+      Wallet.Enrichment.yojson_of_t
+      Wallet.Enrichment.equal
+  in
+  print_s
+    [%message
+      ""
+        ~iban:(e.iban : string option)
+        ~bic:(e.bic : string option)
+        ~provider:(e.provider : string option)
+        ~status:(e.status : string option)];
+  let p =
+    Fixture.roundtrip
+      "statement-eur.json"
+      Transaction.Page.t_of_yojson
+      Transaction.Page.yojson_of_t
+      Transaction.Page.equal
+  in
+  List.iter p.transactions ~f:(fun (tx : Transaction.t) ->
+    print_s
+      [%message
+        ""
+          ~type_:(tx.tx_type : Transaction.Tx_type.t option)
+          ~credit:(tx.credit : string option)
+          ~debit:(tx.debit : string option)
+          ~after:(Option.bind tx.balance_after ~f:(fun b -> b.amount) : string option)]);
+  [%expect {|
+    ((iban (GB50000000000000002758)) (bic (SEOUGB21)) (provider (SIMULATOR))
+     (status (ACTIVE)))
+    ((type_ (Card_authorization)) (credit ()) (debit (1234)) (after (5766)))
+    ((type_ (Sepa_payout_completed)) (credit ()) (debit ()) (after (7000)))
+    ((type_ (Sepa_payout_initiated)) (credit ()) (debit (1000)) (after (7000)))
+    ((type_ (Exchange_debit)) (credit ()) (debit (2000)) (after (8000)))
+    ((type_ (Sepa_payin_completed)) (credit (10000)) (debit ()) (after (10000)))
+    |}]
+;;

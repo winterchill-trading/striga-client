@@ -158,3 +158,41 @@ let%expect_test "whitelists, validation, resend and fee estimate (docs examples)
      (gas_price (15.014)))
     |}]
 ;;
+
+let%expect_test "EUR walk in the sandbox: swap to USDC and SEPA payout, each with OTP" =
+  List.iter [ "swap-init.json"; "sepa-init.json" ] ~f:(fun f ->
+    let i = initiated f in
+    print_s
+      [%message
+        f
+          ~type_:
+            (Option.bind i.transaction ~f:(fun t -> t.tx_type)
+             : Transaction.Tx_type.t option)
+          ~method_:(i.verification_method : Common.Verification_method.t option)
+          ~methods:
+            (i.available_verification_methods : Common.Verification_method.t list option)]);
+  List.iter [ "swap-confirm.json"; "sepa-confirm.json" ] ~f:(fun f ->
+    let tx =
+      Fixture.roundtrip f Transaction.t_of_yojson Transaction.yojson_of_t Transaction.equal
+    in
+    print_s
+      [%message
+        f
+          ~type_:(tx.tx_type : Transaction.Tx_type.t option)
+          ~status:(tx.status : string option)
+          ~before:(Option.bind tx.balance_before ~f:(fun b -> b.amount) : string option)
+          ~after:(Option.bind tx.balance_after ~f:(fun b -> b.amount) : string option)
+          ~order:(tx.order : Wire.Raw_json.t option)]);
+  [%expect {|
+    (swap-init.json (type_ (Swap_currency_initiated)) (method_ (Sms))
+     (methods ((Sms))))
+    (sepa-init.json (type_ (Sepa_payout_initiated)) (method_ (Sms))
+     (methods ((Sms))))
+    (swap-confirm.json (type_ (Currency_exchange)) (status (COMMITTED))
+     (before (10000)) (after (8000))
+     (order
+      ("{\"id\":\"00000000-0000-4000-8000-000000000069\",\"price\":\"0.91\",\"type\":\"buy\",\"ticker\":\"USDCEUR\",\"debit\":{\"currency\":\"EUR\",\"amountFloat\":\"20\",\"amount\":\"2000\"},\"credit\":{\"currency\":\"USDC\",\"amountFloat\":\"21.97\",\"amount\":\"2197\"}}")))
+    (sepa-confirm.json (type_ (Sepa_payout_initiated)) (status ())
+     (before (8000)) (after (7000)) (order ()))
+    |}]
+;;

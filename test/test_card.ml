@@ -104,3 +104,20 @@ let%expect_test "PAN UI options need both values and the token stays hidden" =
     ((card_auth_token <hidden>))
     |}]
 ;;
+
+let%expect_test "card on a funded EUR account: approved authorization" =
+  let c = card "card-eur.json" in
+  print_s [%sexp (c.linked_account_id : string option)];
+  let a =
+    Fixture.roundtrip
+      "sim-card-auth-approved.json"
+      Simulator.Card_authorization.t_of_yojson
+      Simulator.Card_authorization.yojson_of_t
+      Simulator.Card_authorization.equal
+  in
+  print_s [%sexp (a.response : string option)];
+  [%expect {|
+    (ffff0000000000000000000000000065)
+    (APPROVED)
+    |}]
+;;
