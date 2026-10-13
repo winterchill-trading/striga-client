@@ -10,6 +10,7 @@ module Payment = Payment
 module Redact = Redact
 module Secret = Secret
 module Signature = Signature
+module Standing_order = Standing_order
 module Tls = Tls
 module Transaction = Transaction
 module Transport = Transport
