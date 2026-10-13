@@ -1,0 +1,12 @@
+[
+  {
+    "paymentType": "SEPA_INSTANT",
+    "messages": {},
+    "valid": true
+  },
+  {
+    "paymentType": "SEPA",
+    "messages": {},
+    "valid": true
+  }
+]

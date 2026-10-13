@@ -1,0 +1,43 @@
+{
+  "ibans": [
+    {
+      "parentApplicationId": "00000000-0000-4000-8000-0000000000aa",
+      "syncedOwnerId": "00000000-0000-4000-8000-000000000050",
+      "ownerType": "CONSUMER",
+      "iban": "EE350000000000000004",
+      "bic": "EEUHEE2X",
+      "label": "TCP",
+      "paymentType": "SEPA_INSTANT",
+      "id": "00000000-0000-4000-8000-000000000051"
+    },
+    {
+      "parentApplicationId": "00000000-0000-4000-8000-0000000000aa",
+      "syncedOwnerId": "00000000-0000-4000-8000-000000000050",
+      "ownerType": "CONSUMER",
+      "iban": "LV9100000000000002511",
+      "bic": "LAPBLV2X",
+      "label": "XSS",
+      "id": "00000000-0000-4000-8000-000000000052"
+    },
+    {
+      "parentApplicationId": "00000000-0000-4000-8000-0000000000aa",
+      "syncedOwnerId": "00000000-0000-4000-8000-000000000050",
+      "ownerType": "CONSUMER",
+      "iban": "EE350000000000000096",
+      "bic": "MSLITKV1",
+      "label": "HTTP",
+      "id": "00000000-0000-4000-8000-000000000053"
+    },
+    {
+      "parentApplicationId": "00000000-0000-4000-8000-0000000000aa",
+      "syncedOwnerId": "00000000-0000-4000-8000-000000000050",
+      "ownerType": "CONSUMER",
+      "iban": "HU50000000000000000000000889",
+      "bic": "QEKILAV1",
+      "label": "SQL",
+      "id": "00000000-0000-4000-8000-000000000054"
+    }
+  ],
+  "count": 4,
+  "total": 4
+}

@@ -1,0 +1,45 @@
+{
+  "addresses": [
+    {
+      "id": "00000000-0000-4000-8000-000000000046",
+      "createdAt": "2025-01-22T13:02:51.515Z",
+      "address": "bc1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+      "currency": "BTC",
+      "status": "ACTIVATED",
+      "label": "RA BTC",
+      "network": {
+        "name": "Bitcoin"
+      },
+      "internal": true,
+      "internalAccountId": "ffff0000000000000000000000000047"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000048",
+      "createdAt": "2024-06-19T14:31:03.845Z",
+      "address": "0x0000000000000000000000000000000000000048",
+      "currency": "USDC_POLYGON",
+      "status": "ACTIVATED",
+      "label": "kraken usdc",
+      "network": {
+        "name": "USD Coin (Polygon)",
+        "type": "ERC20",
+        "contractAddress": "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359"
+      },
+      "internal": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000049",
+      "createdAt": "2024-06-07T07:43:16.762Z",
+      "address": "38WcNk614AHQkxJaAYbduonciv8Z3bfBTe",
+      "currency": "BTC",
+      "status": "ACTIVATED",
+      "label": "Kraken",
+      "network": {
+        "name": "Bitcoin"
+      },
+      "internal": false
+    }
+  ],
+  "count": 3,
+  "total": 3
+}

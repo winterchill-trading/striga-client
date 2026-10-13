@@ -1,0 +1,18 @@
+{
+  "totalFee": "398",
+  "networkFee": "1662779116152000",
+  "ourFee": "279",
+  "theirFee": "119",
+  "feeCurrency": "USDT",
+  "gasLimit": "84000",
+  "gasPrice": "15.014",
+  "fixedFeeDetails": {
+    "amount": "104",
+    "exchangeRate": "0.96",
+    "appliedFeeCents": "100"
+  },
+  "percentageFeeDetails": {
+    "amount": "15",
+    "appliedFeeBps": "100"
+  }
+}

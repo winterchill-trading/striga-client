@@ -1,0 +1,16 @@
+{
+  "challengeId": "00000000-0000-4000-8000-000000000042",
+  "dateExpires": "2023-08-23T11:37:51.324Z",
+  "transaction": {
+    "syncedOwnerId": "00000000-0000-4000-8000-000000000026",
+    "parentWalletId": "00000000-0000-4000-8000-000000000043",
+    "currency": "EUR",
+    "sourceAccountId": "ffff0000000000000000000000000044",
+    "destinationAccountId": "ffff0000000000000000000000000045",
+    "amount": "20000",
+    "memo": "extend",
+    "senderAccountBalance": "200000",
+    "status": "PENDING_2FA_CONFIRMATION",
+    "txType": "INTRA_LEDGER_SEND"
+  }
+}

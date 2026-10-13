@@ -1,0 +1,8 @@
+{
+  "id": "eeee000000000000000000000000000000000000000000000000000000000014",
+  "description": "sandbox topup",
+  "amount": "10000",
+  "invoice": "lnbcrt100u1p<redacted>",
+  "expiry": 1792015520,
+  "fillOrKillAtProposedRate": false
+}

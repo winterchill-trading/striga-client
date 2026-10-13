@@ -1,0 +1,34 @@
+{
+  "challengeId": "00000000-0000-4000-8000-000000000031",
+  "dateExpires": "2026-05-26T04:13:04.313Z",
+  "transaction": {
+    "syncedOwnerId": "00000000-0000-4000-8000-000000000032",
+    "sourceAccountId": "ffff0000000000000000000000000033",
+    "destinationAccountId": "ffff0000000000000000000000000034",
+    "amount": "2000",
+    "memo": "cultivate cross-platform blockchains",
+    "status": "PENDING_2FA_CONFIRMATION",
+    "txType": "SWAP_CURRENCY_INITIATED",
+    "parentWalletId": "00000000-0000-4000-8000-000000000035",
+    "currency": "EUR",
+    "feeEstimate": {
+      "totalFee": "0",
+      "networkFee": "0",
+      "ourFee": "0",
+      "theirFee": "0",
+      "feeCurrency": "EUR",
+      "fixedFeeDetails": {
+        "amount": "0",
+        "exchangeRate": "0"
+      },
+      "percentageFeeDetails": {
+        "amount": "0"
+      }
+    }
+  },
+  "verificationMethod": "sms",
+  "availableVerificationMethods": [
+    "sms"
+  ],
+  "fallbackViaResend": false
+}

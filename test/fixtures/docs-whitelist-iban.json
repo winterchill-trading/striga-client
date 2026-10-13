@@ -1,0 +1,23 @@
+{
+  "id": "00000000-0000-4000-8000-000000000051",
+  "parentApplicationId": "00000000-0000-4000-8000-0000000000aa",
+  "syncedOwnerId": "00000000-0000-4000-8000-000000000050",
+  "ownerType": "CONSUMER",
+  "iban": "EE350000000000000004",
+  "bic": "EEUHEE2X",
+  "label": "TCP",
+  "paymentType": "SEPA_INSTANT",
+  "createdAt": "2025-12-05T14:40:53.642Z",
+  "validation": [
+    {
+      "paymentType": "SEPA_INSTANT",
+      "messages": {},
+      "valid": true
+    },
+    {
+      "paymentType": "SEPA",
+      "messages": {},
+      "valid": true
+    }
+  ]
+}

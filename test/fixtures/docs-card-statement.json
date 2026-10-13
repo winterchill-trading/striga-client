@@ -1,0 +1,41 @@
+{
+  "transactions": [
+    {
+      "relatedCardTransactionId": "00000000-0000-4000-8000-000000000028",
+      "type": "CARD_AUTHORIZATION",
+      "originalAmount": 10.5,
+      "originalCurrency": "EUR",
+      "transactionAmount": 10.5,
+      "transactionCurrency": "EUR",
+      "merchantId": "Striga Simulator",
+      "merchantName": "Striga Simulator",
+      "merchantCity": "Tallinn",
+      "merchantCountryCode": "EST",
+      "merchantCategoryCode": "5812",
+      "accountTransactionId": "00000000-0000-4000-8000-000000000028",
+      "order": {
+        "price": "1",
+        "debit": {
+          "currency": "BTC",
+          "amountFloat": "0.00030718",
+          "amount": "30718"
+        },
+        "credit": {
+          "currency": "BTC",
+          "amountFloat": "0.00030718",
+          "amount": "30718"
+        }
+      },
+      "linkedAccountId": "ffff0000000000000000000000000029",
+      "linkedAccountCurrency": "BTC",
+      "parentWalletId": "00000000-0000-4000-8000-000000000030",
+      "createdAt": "2023-11-09T11:38:50.877Z",
+      "merchantTransactionAmount": "10.5",
+      "merchantTransactionCurrency": "EUR",
+      "accountTransactionAmount": "10.5",
+      "accountTransactionCurrency": "EUR"
+    }
+  ],
+  "count": 1,
+  "total": 1
+}

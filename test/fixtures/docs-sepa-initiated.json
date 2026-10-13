@@ -1,0 +1,32 @@
+{
+  "challengeId": "00000000-0000-4000-8000-000000000036",
+  "dateExpires": "2023-08-22T09:35:38.187Z",
+  "transaction": {
+    "syncedOwnerId": "00000000-0000-4000-8000-000000000026",
+    "sourceAccountId": "ffff0000000000000000000000000024",
+    "iban": "BE17000000003521",
+    "bic": "TRWIBEB1XXX",
+    "amount": "959606",
+    "memo": "evolve",
+    "status": "PENDING_2FA_CONFIRMATION",
+    "txType": "SEPA_PAYOUT_INITIATED",
+    "parentWalletId": "00000000-0000-4000-8000-000000000037",
+    "currency": "EUR"
+  },
+  "feeEstimate": {
+    "totalFee": "20094",
+    "networkFee": "0",
+    "ourFee": "0",
+    "theirFee": "20094",
+    "feeCurrency": "EUR",
+    "fixedFeeDetails": {
+      "amount": "500",
+      "exchangeRate": "1",
+      "appliedFeeCents": "100"
+    },
+    "percentageFeeDetails": {
+      "amount": "19594",
+      "appliedFeeBps": "100"
+    }
+  }
+}

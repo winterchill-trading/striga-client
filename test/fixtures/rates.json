@@ -1,0 +1,65 @@
+{
+  "ETHEUR": {
+    "price": "2237.72",
+    "buy": "2248.91",
+    "sell": "2226.53",
+    "timestamp": 1791930034658,
+    "hTimestamp": "2026-10-13T22:20:34.658Z",
+    "currency": "Euros"
+  },
+  "MATICEUR": {
+    "price": "0.21",
+    "buy": "0.22",
+    "sell": "0.19",
+    "timestamp": 1747670876835,
+    "hTimestamp": "2025-05-19T16:07:56.835Z"
+  },
+  "USDCEUR": {
+    "price": "0.9",
+    "buy": "0.91",
+    "sell": "0.88",
+    "timestamp": 1791930039807,
+    "hTimestamp": "2026-10-13T22:20:39.807Z",
+    "currency": "Euros"
+  },
+  "BTCEUR": {
+    "price": "74429.95",
+    "buy": "74802.1",
+    "sell": "74057.8",
+    "timestamp": 1791930037885,
+    "hTimestamp": "2026-10-13T22:20:37.885Z",
+    "currency": "Euros"
+  },
+  "BTCUSDC": {
+    "price": "83333.33",
+    "buy": "83750",
+    "sell": "82916.66",
+    "timestamp": 1791930039807,
+    "hTimestamp": "2026-10-13T22:20:39.807Z",
+    "currency": "USD Coin"
+  },
+  "BNBEUR": {
+    "price": "661.82",
+    "buy": "665.13",
+    "sell": "658.51",
+    "timestamp": 1791930035688,
+    "hTimestamp": "2026-10-13T22:20:35.688Z",
+    "currency": "Euros"
+  },
+  "POLEUR": {
+    "price": "0.1",
+    "buy": "0.11",
+    "sell": "0.08",
+    "timestamp": 1791930039807,
+    "hTimestamp": "2026-10-13T22:20:39.807Z",
+    "currency": "Euros"
+  },
+  "SOLEUR": {
+    "price": "95.29",
+    "buy": "95.77",
+    "sell": "94.81",
+    "timestamp": 1791930035427,
+    "hTimestamp": "2026-10-13T22:20:35.427Z",
+    "currency": "Euros"
+  }
+}
