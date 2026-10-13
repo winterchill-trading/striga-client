@@ -10,6 +10,11 @@ module Num_string : sig
   type t = string [@@deriving sexp, equal, compare, yojson]
 end
 
+(** A string that prints as [<hidden>] in sexps: one-time tokens, TOTP secrets. *)
+module Hidden_string : sig
+  type t = string [@@deriving sexp_of, equal, yojson]
+end
+
 (** String enums with a catch-all, so a new value from Striga never fails a decode. *)
 module Enum : sig
   module type Arg = sig

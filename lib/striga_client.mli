@@ -9,4 +9,5 @@ module Secret = Secret
 module Signature = Signature
 module Tls = Tls
 module Transport = Transport
+module User = User
 module Wire = Wire

@@ -20,6 +20,14 @@ module Num_string = struct
   let yojson_of_t t : Yojson.Safe.t = `String t
 end
 
+module Hidden_string = struct
+  type t = string [@@deriving equal]
+
+  let sexp_of_t (_ : t) = Sexp.Atom "<hidden>"
+  let t_of_yojson = Ppx_yojson_conv_lib.Yojson_conv.string_of_yojson
+  let yojson_of_t = Ppx_yojson_conv_lib.Yojson_conv.yojson_of_string
+end
+
 module Enum = struct
   module type Arg = sig
     type t
