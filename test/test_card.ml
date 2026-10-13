@@ -18,7 +18,8 @@ let%expect_test "virtual card linked to a BTC account (sandbox)" =
         ~limit_fields:(Option.value_map c.limits ~default:0 ~f:List.length : int)];
   let c' = card "card-get.json" in
   print_s [%sexp (String.equal c.id c'.id : bool)];
-  [%expect {|
+  [%expect
+    {|
     ((type_ (Virtual)) (status (Active)) (masked (474367******2932))
      (security
       (((contactless_enabled (true)) (withdrawal_enabled (true))
@@ -30,7 +31,11 @@ let%expect_test "virtual card linked to a BTC account (sandbox)" =
 
 let%expect_test "cards by user (sandbox)" =
   let p =
-    Fixture.roundtrip "cards-all.json" Card.Page.t_of_yojson Card.Page.yojson_of_t Card.Page.equal
+    Fixture.roundtrip
+      "cards-all.json"
+      Card.Page.t_of_yojson
+      Card.Page.yojson_of_t
+      Card.Page.equal
   in
   print_s
     [%message
@@ -59,7 +64,8 @@ let%expect_test "card statements: sandbox decline and docs approval" =
             ~amount:(t.original_amount : string option)
             ~mcc:(t.merchant_category_code : string option)
             ~decline:(t.decline_details : string option)]));
-  [%expect {|
+  [%expect
+    {|
     ((type_ (Card_authorization_declined)) (amount (12.34)) (mcc (5812))
      (decline ("Not Sufficient Funds")))
     ((type_ (Card_authorization)) (amount (10.5)) (mcc (5812)) (decline ()))
@@ -78,8 +84,7 @@ let%expect_test "statuses decode case-insensitively" =
 
 let%expect_test "PAN UI options need both values and the token stays hidden" =
   let config ?application_id ?ui_secret () =
-    ok_exn
-      (Config.create ?application_id ?ui_secret ~api_key:"k" ~api_secret:"s" ())
+    ok_exn (Config.create ?application_id ?ui_secret ~api_key:"k" ~api_secret:"s" ())
   in
   print_s
     [%sexp
@@ -92,7 +97,8 @@ let%expect_test "PAN UI options need both values and the token stays hidden" =
        : string Or_error.t)];
   let c = Card.Consent.t_of_yojson (`Assoc [ "cardAuthToken", `String "eyJ.x.y" ]) in
   print_s [%sexp (c : Card.Consent.t)];
-  [%expect {|
+  [%expect
+    {|
     (Error "the card PAN UI needs STRIGA_APPLICATION_ID and STRIGA_UI_SECRET")
     (Ok "{\"uiSecret\":\"ui\",\"applicationId\":\"app\"}")
     ((card_auth_token <hidden>))

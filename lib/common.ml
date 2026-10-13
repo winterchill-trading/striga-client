@@ -82,7 +82,9 @@ module Blockchain_network = struct
     ; contract_address : string option
          [@key "contractAddress"] [@default None] [@yojson_drop_if Option.is_none]
     ; blockchain_deposit_address : string option
-         [@key "blockchainDepositAddress"] [@default None] [@yojson_drop_if Option.is_none]
+         [@key "blockchainDepositAddress"]
+         [@default None]
+         [@yojson_drop_if Option.is_none]
     }
   [@@deriving sexp, equal, yojson] [@@yojson.allow_extra_fields]
 end

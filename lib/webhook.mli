@@ -1,9 +1,9 @@
-(** Incoming webhooks. Striga posts to the configured URL plus a path per channel:
-    [/kyc], [/kyb], [/tx] (ledger transactions, card authorizations and travel-rule
-    notices, told apart by their fields), [/card/watch] (card status) and [/ping]
-    (dashboard test button and {!Simulator.webhook_ping}). Each request has a
-    [signature] header (see {!Signature.verify_webhook}); deliveries are retried up to 5
-    times until the endpoint answers 2xx. *)
+(** Incoming webhooks. Striga posts to the configured URL plus a path per channel: [/kyc],
+    [/kyb], [/tx] (ledger transactions, card authorizations and travel-rule notices, told
+    apart by their fields), [/card/watch] (card status) and [/ping] (dashboard test button
+    and {!Simulator.webhook_ping}). Each request has a [signature] header (see
+    {!Signature.verify_webhook}); deliveries are retried up to 5 times until the endpoint
+    answers 2xx. *)
 
 open! Core
 

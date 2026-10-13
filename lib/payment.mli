@@ -4,8 +4,8 @@
     transfer needs.
 
     Every initiation returns a challenge; the user's code (SMS, sandbox ["123456"], or
-    TOTP) goes to {!confirm}. Initiations are never retried automatically: a lost
-    response may still have created a pending transaction. *)
+    TOTP) goes to {!confirm}. Initiations are never retried automatically: a lost response
+    may still have created a pending transaction. *)
 
 open! Core
 open! Async
@@ -16,7 +16,7 @@ module Initiated : sig
     { challenge_id : string
     ; date_expires : string option
     ; transaction : Transaction.t option
-        (** status [PENDING_2FA_CONFIRMATION]; absent for Lightning withdrawals *)
+    (** status [PENDING_2FA_CONFIRMATION]; absent for Lightning withdrawals *)
     ; fee_estimate : Common.Fee_estimate.t option
     ; verification_method : Common.Verification_method.t option
     ; available_verification_methods : Common.Verification_method.t list option

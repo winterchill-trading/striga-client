@@ -6,9 +6,9 @@ open Striga_client
 let%expect_test "RFC 6238 vectors" =
   let key = "12345678901234567890" in
   List.iter [ 59; 1111111109; 1111111111; 1234567890; 2000000000 ] ~f:(fun s ->
-    print_endline (Totp.code ~digits:8 ~key (Time_ns.of_int_ns_since_epoch (s * 1_000_000_000))));
-  [%expect
-    {|
+    print_endline
+      (Totp.code ~digits:8 ~key (Time_ns.of_int_ns_since_epoch (s * 1_000_000_000))));
+  [%expect {|
     94287082
     07081804
     14050471
@@ -23,7 +23,9 @@ let%expect_test "base32 secrets" =
   print_s [%sexp (Totp.base32_decode b32 : string Or_error.t)];
   print_s
     [%sexp
-      (Totp.code_of_base32 (String.lowercase b32) (Time_ns.of_int_ns_since_epoch 59_000_000_000)
+      (Totp.code_of_base32
+         (String.lowercase b32)
+         (Time_ns.of_int_ns_since_epoch 59_000_000_000)
        : string Or_error.t)];
   print_s [%sexp (Totp.base32_decode "AB1" : string Or_error.t)];
   [%expect

@@ -76,7 +76,8 @@ end
 
 module Kyc = struct
   type t =
-    { user_id : string option [@key "userId"] [@default None] [@yojson_drop_if Option.is_none]
+    { user_id : string option
+         [@key "userId"] [@default None] [@yojson_drop_if Option.is_none]
     ; email_verified : bool option
          [@key "emailVerified"] [@default None] [@yojson_drop_if Option.is_none]
     ; mobile_verified : bool option
@@ -148,7 +149,8 @@ module Kyc_start = struct
   type t =
     { provider : string option [@default None] [@yojson_drop_if Option.is_none]
     ; token : Wire.Hidden_string.t
-    ; user_id : string option [@key "userId"] [@default None] [@yojson_drop_if Option.is_none]
+    ; user_id : string option
+         [@key "userId"] [@default None] [@yojson_drop_if Option.is_none]
     ; verification_link : Wire.Hidden_string.t option
          [@key "verificationLink"] [@default None] [@yojson_drop_if Option.is_none]
     }
@@ -173,21 +175,12 @@ let create tr ~first_name ~last_name ~email ~mobile ?date_of_birth ?address () =
   Call.json tr `POST "/user/create" ~body ~name:"User.t" t_of_yojson
 ;;
 
-let update
-  tr
-  ~user_id
-  ?first_name
-  ?last_name
-  ?email
-  ?mobile
-  ?date_of_birth
-  ?address
-  ()
-  =
+let update tr ~user_id ?first_name ?last_name ?email ?mobile ?date_of_birth ?address () =
   let body =
     Wire.obj
       (("userId", Some (`String user_id))
-       :: profile_fields ?first_name ?last_name ?email ?mobile ?date_of_birth ?address ())
+       :: profile_fields ?first_name ?last_name ?email ?mobile ?date_of_birth ?address ()
+      )
   in
   Call.json tr `PATCH "/user/update" ~body ~name:"User.t" t_of_yojson
 ;;
@@ -236,7 +229,9 @@ let start_kyc tr ~user_id ?tier () =
     "/user/kyc/start"
     ~body:
       (Wire.obj
-         [ "userId", Some (`String user_id); "tier", Option.map tier ~f:(fun i -> `Int i) ])
+         [ "userId", Some (`String user_id)
+         ; "tier", Option.map tier ~f:(fun i -> `Int i)
+         ])
     ~name:"User.Kyc_start.t"
     Kyc_start.t_of_yojson
 ;;

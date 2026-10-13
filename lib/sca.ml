@@ -14,7 +14,8 @@ module Totp_enrollment = struct
 end
 
 module Recovery_codes = struct
-  type t = { recovery_codes : Wire.Hidden_string.t list [@key "recoveryCodes"] [@default []] }
+  type t =
+    { recovery_codes : Wire.Hidden_string.t list [@key "recoveryCodes"] [@default []] }
   [@@deriving sexp_of, equal, yojson] [@@yojson.allow_extra_fields]
 end
 
@@ -84,7 +85,8 @@ let complete_totp tr ~user_id ~secret ~code =
     `POST
     "/user/resume/setup-two-factor"
     ~body:
-      (`Assoc [ "userId", `String user_id; "secret", `String secret; "code", `String code ])
+      (`Assoc
+        [ "userId", `String user_id; "secret", `String secret; "code", `String code ])
     ~name:"Sca.Recovery_codes.t"
     Recovery_codes.t_of_yojson
 ;;
@@ -96,9 +98,9 @@ let login_start tr ~user_id ~verification_method =
     "/user/login/start"
     ~body:
       (`Assoc
-          [ "userId", `String user_id
-          ; "verificationMethod", Common.Verification_method.yojson_of_t verification_method
-          ])
+        [ "userId", `String user_id
+        ; "verificationMethod", Common.Verification_method.yojson_of_t verification_method
+        ])
     ~name:"Sca.Login_challenge.t"
     Login_challenge.t_of_yojson
 ;;

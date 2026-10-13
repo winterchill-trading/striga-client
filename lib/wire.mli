@@ -2,9 +2,9 @@
 
 open! Core
 
-(** A decimal number carried as text. Striga sends amounts as strings in the smallest
-    unit ("10000" cents, "200000000000000000" wei, which overflows a 63-bit int past 4.6
-    ETH) but some endpoints send numbers ([credit: 495], card [originalAmount: 12.34],
+(** A decimal number carried as text. Striga sends amounts as strings in the smallest unit
+    ("10000" cents, "200000000000000000" wei, which overflows a 63-bit int past 4.6 ETH)
+    but some endpoints send numbers ([credit: 495], card [originalAmount: 12.34],
     [createdAt: 1791929027997]). Decoding accepts both; encoding always writes a string. *)
 module Num_string : sig
   type t = string [@@deriving sexp, equal, compare, yojson]
@@ -15,9 +15,9 @@ module Hidden_string : sig
   type t = string [@@deriving sexp_of, equal, yojson]
 end
 
-(** Arbitrary JSON kept as is, for sub-objects whose shape varies between endpoints
-    (e.g. a swap [order] carries strings in statements and objects in confirmations).
-    Sexps show the compact JSON text. *)
+(** Arbitrary JSON kept as is, for sub-objects whose shape varies between endpoints (e.g.
+    a swap [order] carries strings in statements and objects in confirmations). Sexps show
+    the compact JSON text. *)
 module Raw_json : sig
   type t = Yojson.Safe.t [@@deriving sexp, equal, yojson]
 end

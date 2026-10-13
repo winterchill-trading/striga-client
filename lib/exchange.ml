@@ -7,7 +7,8 @@ module Rate = struct
     { price : Wire.Num_string.t option [@default None] [@yojson_drop_if Option.is_none]
     ; buy : Wire.Num_string.t option [@default None] [@yojson_drop_if Option.is_none]
     ; sell : Wire.Num_string.t option [@default None] [@yojson_drop_if Option.is_none]
-    ; timestamp : Wire.Num_string.t option [@default None] [@yojson_drop_if Option.is_none]
+    ; timestamp : Wire.Num_string.t option
+         [@default None] [@yojson_drop_if Option.is_none]
     ; h_timestamp : string option
          [@key "hTimestamp"] [@default None] [@yojson_drop_if Option.is_none]
     ; currency : string option [@default None] [@yojson_drop_if Option.is_none]
@@ -34,7 +35,9 @@ module Rates = struct
   let find t ~ticker = List.Assoc.find t ticker ~equal:String.equal
 end
 
-let rates tr = Call.read tr "/trade/rates" ~body:(`Assoc []) ~name:"Exchange.Rates.t" Rates.t_of_yojson
+let rates tr =
+  Call.read tr "/trade/rates" ~body:(`Assoc []) ~name:"Exchange.Rates.t" Rates.t_of_yojson
+;;
 
 let swap
   tr

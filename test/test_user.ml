@@ -2,9 +2,12 @@ open! Core
 open Striga_client
 
 let%expect_test "created user" =
-  let u = Fixture.roundtrip "user-create.json" User.t_of_yojson User.yojson_of_t User.equal in
+  let u =
+    Fixture.roundtrip "user-create.json" User.t_of_yojson User.yojson_of_t User.equal
+  in
   print_s [%sexp (u : User.t)];
-  [%expect {|
+  [%expect
+    {|
     ((user_id 00000000-0000-4000-8000-000000000001) (first_name ())
      (last_name ()) (user_handle ())
      (email (hello+striga-1791929027@winterchill.xyz))
@@ -23,10 +26,13 @@ let%expect_test "created user" =
 ;;
 
 let%expect_test "user after verification" =
-  let u = Fixture.roundtrip "user-get.json" User.t_of_yojson User.yojson_of_t User.equal in
+  let u =
+    Fixture.roundtrip "user-get.json" User.t_of_yojson User.yojson_of_t User.equal
+  in
   print_s [%sexp (u.kyc : User.Kyc.t option)];
   print_s [%sexp (u.date_of_birth : Common.Date_of_birth.t option)];
-  [%expect {|
+  [%expect
+    {|
     (((user_id ()) (email_verified (true)) (mobile_verified (true))
       (status (Not_started)) (current_tier (0)) (details ())
       (rejection_comments (((user_comment ()) (auto_comment ()))))
@@ -80,7 +86,8 @@ let%expect_test "KYC start hides the SDK token in sexps" =
       User.Kyc_start.equal
   in
   print_s [%sexp (s : User.Kyc_start.t)];
-  [%expect {|
+  [%expect
+    {|
     ((provider (SUMSUB)) (token <hidden>)
      (user_id (00000000-0000-4000-8000-000000000001))
      (verification_link (<hidden>)))
@@ -90,10 +97,12 @@ let%expect_test "KYC start hides the SDK token in sexps" =
 let%expect_test "a real token never prints" =
   let s =
     User.Kyc_start.t_of_yojson
-      (Yojson.Safe.from_string {|{"token":"_act-sbx-jwt-abc","verificationLink":"https://x"}|})
+      (Yojson.Safe.from_string
+         {|{"token":"_act-sbx-jwt-abc","verificationLink":"https://x"}|})
   in
   print_s [%sexp (s : User.Kyc_start.t)];
-  [%expect {| ((provider ()) (token <hidden>) (user_id ()) (verification_link (<hidden>))) |}]
+  [%expect
+    {| ((provider ()) (token <hidden>) (user_id ()) (verification_link (<hidden>))) |}]
 ;;
 
 let%expect_test "unknown KYC status values survive" =

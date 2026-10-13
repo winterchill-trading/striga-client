@@ -20,7 +20,8 @@ end
 
 module Card_authorization = struct
   type t =
-    { transaction : Wire.Raw_json.t option [@default None] [@yojson_drop_if Option.is_none]
+    { transaction : Wire.Raw_json.t option
+         [@default None] [@yojson_drop_if Option.is_none]
     ; response : string option [@default None] [@yojson_drop_if Option.is_none]
     }
   [@@deriving sexp, equal, yojson] [@@yojson.allow_extra_fields]
@@ -63,7 +64,8 @@ let kyb tr ~business_id ~decision =
       `PATCH
       "/simulate/business/kyb"
       ~body:
-        (`Assoc [ "businessId", `String business_id; "status", Decision.to_json decision ])
+        (`Assoc
+          [ "businessId", `String business_id; "status", Decision.to_json decision ])
       ())
 ;;
 
@@ -105,10 +107,10 @@ let sepa_outcome tr ~transaction_id ~account_id ~completed =
       "/simulate/sepa"
       ~body:
         (`Assoc
-            [ "transactionId", `String transaction_id
-            ; "accountId", `String account_id
-            ; "status", `String (if completed then "COMPLETED" else "FAILED")
-            ])
+          [ "transactionId", `String transaction_id
+          ; "accountId", `String account_id
+          ; "status", `String (if completed then "COMPLETED" else "FAILED")
+          ])
       ())
 ;;
 
@@ -120,9 +122,9 @@ let card_status tr ~card_id ~active =
       "/simulate/card/status"
       ~body:
         (`Assoc
-            [ "cardId", `String card_id
-            ; "status", `String (if active then "ACTIVE" else "DISPATCHED")
-            ])
+          [ "cardId", `String card_id
+          ; "status", `String (if active then "ACTIVE" else "DISPATCHED")
+          ])
       ())
 ;;
 

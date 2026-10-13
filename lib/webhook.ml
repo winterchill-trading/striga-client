@@ -26,7 +26,9 @@ let parse ~path ~body =
     Or_error.try_with (fun () -> Yojson.Safe.from_string body)
     |> Or_error.tag ~tag:"webhook body is not JSON"
   in
-  let ends suffix = String.is_suffix (String.chop_suffix_if_exists path ~suffix:"/") ~suffix in
+  let ends suffix =
+    String.is_suffix (String.chop_suffix_if_exists path ~suffix:"/") ~suffix
+  in
   if ends "/kyc"
   then Wire.decode "User.Kyc.t" User.Kyc.t_of_yojson json >>| fun k -> Event.Kyc k
   else if ends "/tx"

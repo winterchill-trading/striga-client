@@ -29,9 +29,7 @@ let code ?(digits = 6) ~key time =
   for i = 0 to 7 do
     Bytes.set msg (7 - i) (Char.of_int_exn ((counter asr (8 * i)) land 0xff))
   done;
-  let mac =
-    Cryptokit.hash_string (Cryptokit.MAC.hmac_sha1 key) (Bytes.to_string msg)
-  in
+  let mac = Cryptokit.hash_string (Cryptokit.MAC.hmac_sha1 key) (Bytes.to_string msg) in
   let byte i = Char.to_int mac.[i] in
   let offset = byte 19 land 0x0f in
   let bin =

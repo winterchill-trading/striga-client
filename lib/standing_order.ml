@@ -18,16 +18,12 @@ type t =
   { id : string
   ; user_id : string option
        [@key "userId"] [@default None] [@yojson_drop_if Option.is_none]
-  ; status : string option
-       [@default None] [@yojson_drop_if Option.is_none]
-  ; currency : string option
-       [@default None] [@yojson_drop_if Option.is_none]
+  ; status : string option [@default None] [@yojson_drop_if Option.is_none]
+  ; currency : string option [@default None] [@yojson_drop_if Option.is_none]
   ; source_currency : string option
        [@key "sourceCurrency"] [@default None] [@yojson_drop_if Option.is_none]
-  ; network : string option
-       [@default None] [@yojson_drop_if Option.is_none]
-  ; address : string option
-       [@default None] [@yojson_drop_if Option.is_none]
+  ; network : string option [@default None] [@yojson_drop_if Option.is_none]
+  ; address : string option [@default None] [@yojson_drop_if Option.is_none]
   ; proposed_rate : string option
        [@key "proposedRate"] [@default None] [@yojson_drop_if Option.is_none]
   ; parent_wallet_id : string option
@@ -38,22 +34,17 @@ type t =
        [@key "whitelistedAddressId"] [@default None] [@yojson_drop_if Option.is_none]
   ; whitelisted_iban_id : string option
        [@key "whitelistedIbanId"] [@default None] [@yojson_drop_if Option.is_none]
-  ; iban : string option
-       [@default None] [@yojson_drop_if Option.is_none]
-  ; bic : string option
-       [@default None] [@yojson_drop_if Option.is_none]
+  ; iban : string option [@default None] [@yojson_drop_if Option.is_none]
+  ; bic : string option [@default None] [@yojson_drop_if Option.is_none]
   ; standing_order_direction : string option
        [@key "standingOrderDirection"] [@default None] [@yojson_drop_if Option.is_none]
-  ; action : string option
-       [@default None] [@yojson_drop_if Option.is_none]
+  ; action : string option [@default None] [@yojson_drop_if Option.is_none]
   ; created_at : string option
        [@key "createdAt"] [@default None] [@yojson_drop_if Option.is_none]
   ; last_updated_at : string option
        [@key "lastUpdatedAt"] [@default None] [@yojson_drop_if Option.is_none]
-  ; swaps : Wire.Raw_json.t option
-       [@default None] [@yojson_drop_if Option.is_none]
-  ; payouts : Wire.Raw_json.t option
-       [@default None] [@yojson_drop_if Option.is_none]
+  ; swaps : Wire.Raw_json.t option [@default None] [@yojson_drop_if Option.is_none]
+  ; payouts : Wire.Raw_json.t option [@default None] [@yojson_drop_if Option.is_none]
   ; fixed_fee : Wire.Num_string.t option
        [@key "fixedFee"] [@default None] [@yojson_drop_if Option.is_none]
   ; percent_fee_bps : Wire.Num_string.t option
@@ -89,20 +80,17 @@ end
 
 module Confirmed = struct
   type t =
-    { id : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    { id : string option [@default None] [@yojson_drop_if Option.is_none]
     ; user_id : string option
          [@key "userId"] [@default None] [@yojson_drop_if Option.is_none]
-    ; status : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; status : string option [@default None] [@yojson_drop_if Option.is_none]
     ; whitelisted_address_id : string option
          [@key "whitelistedAddressId"] [@default None] [@yojson_drop_if Option.is_none]
     ; whitelisted_iban_id : string option
          [@key "whitelistedIbanId"] [@default None] [@yojson_drop_if Option.is_none]
     ; wallet_id : string option
          [@key "walletId"] [@default None] [@yojson_drop_if Option.is_none]
-    ; direction : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; direction : string option [@default None] [@yojson_drop_if Option.is_none]
     ; standing_orders : Wire.Raw_json.t option
          [@key "standingOrders"] [@default None] [@yojson_drop_if Option.is_none]
     }
@@ -112,7 +100,6 @@ end
 let s v = Option.map v ~f:(fun s -> `String s)
 let vm v = Option.map v ~f:Common.Verification_method.yojson_of_t
 let path p = "/standing-orders" ^ p
-
 let challenge = Common.Challenge.t_of_yojson
 
 let create
@@ -224,7 +211,8 @@ let by_id p tr ~user_id ~standing_order_id =
     tr
     `POST
     (path p)
-    ~body:(`Assoc [ "userId", `String user_id; "standingOrderId", `String standing_order_id ])
+    ~body:
+      (`Assoc [ "userId", `String user_id; "standingOrderId", `String standing_order_id ])
     ~name:"Standing_order.t"
     t_of_yojson
 ;;
@@ -238,7 +226,8 @@ let resume tr ~user_id ~standing_order_id =
     tr
     `POST
     (path "/resume")
-    ~body:(`Assoc [ "userId", `String user_id; "standingOrderId", `String standing_order_id ])
+    ~body:
+      (`Assoc [ "userId", `String user_id; "standingOrderId", `String standing_order_id ])
     ~name:"Standing_order.t"
     t_of_yojson
 ;;

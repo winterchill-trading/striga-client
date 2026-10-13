@@ -102,8 +102,7 @@ module Tx_type = struct
 end
 
 type t =
-  { id : string option
-       [@default None] [@yojson_drop_if Option.is_none]
+  { id : string option [@default None] [@yojson_drop_if Option.is_none]
   ; account_id : string option
        [@key "accountId"] [@default None] [@yojson_drop_if Option.is_none]
   ; synced_owner_id : string option
@@ -116,32 +115,23 @@ type t =
        [@key "sourceAccountId"] [@default None] [@yojson_drop_if Option.is_none]
   ; destination_account_id : string option
        [@key "destinationAccountId"] [@default None] [@yojson_drop_if Option.is_none]
-  ; credit : Wire.Num_string.t option
-       [@default None] [@yojson_drop_if Option.is_none]
-  ; debit : Wire.Num_string.t option
-       [@default None] [@yojson_drop_if Option.is_none]
-  ; amount : Wire.Num_string.t option
-       [@default None] [@yojson_drop_if Option.is_none]
-  ; currency : string option
-       [@default None] [@yojson_drop_if Option.is_none]
-  ; timestamp : string option
-       [@default None] [@yojson_drop_if Option.is_none]
-  ; datetime : string option
-       [@default None] [@yojson_drop_if Option.is_none]
-  ; status : string option
-       [@default None] [@yojson_drop_if Option.is_none]
+  ; credit : Wire.Num_string.t option [@default None] [@yojson_drop_if Option.is_none]
+  ; debit : Wire.Num_string.t option [@default None] [@yojson_drop_if Option.is_none]
+  ; amount : Wire.Num_string.t option [@default None] [@yojson_drop_if Option.is_none]
+  ; currency : string option [@default None] [@yojson_drop_if Option.is_none]
+  ; timestamp : string option [@default None] [@yojson_drop_if Option.is_none]
+  ; datetime : string option [@default None] [@yojson_drop_if Option.is_none]
+  ; status : string option [@default None] [@yojson_drop_if Option.is_none]
   ; tx_type : Tx_type.t option
        [@key "txType"] [@default None] [@yojson_drop_if Option.is_none]
   ; tx_sub_type : string option
        [@key "txSubType"] [@default None] [@yojson_drop_if Option.is_none]
-  ; memo : string option
-       [@default None] [@yojson_drop_if Option.is_none]
+  ; memo : string option [@default None] [@yojson_drop_if Option.is_none]
   ; memo_payer : string option
        [@key "memoPayer"] [@default None] [@yojson_drop_if Option.is_none]
   ; exchange_rate : Wire.Num_string.t option
        [@key "exchangeRate"] [@default None] [@yojson_drop_if Option.is_none]
-  ; order : Wire.Raw_json.t option
-       [@default None] [@yojson_drop_if Option.is_none]
+  ; order : Wire.Raw_json.t option [@default None] [@yojson_drop_if Option.is_none]
   ; balance_before : Common.Balance.t option
        [@key "balanceBefore"] [@default None] [@yojson_drop_if Option.is_none]
   ; balance_after : Common.Balance.t option
@@ -150,8 +140,7 @@ type t =
        [@key "parentWalletId"] [@default None] [@yojson_drop_if Option.is_none]
   ; tx_hash : string option
        [@key "txHash"] [@default None] [@yojson_drop_if Option.is_none]
-  ; hash : string option
-       [@default None] [@yojson_drop_if Option.is_none]
+  ; hash : string option [@default None] [@yojson_drop_if Option.is_none]
   ; blockchain_network : Wire.Network_name.t option
        [@key "blockchainNetwork"] [@default None] [@yojson_drop_if Option.is_none]
   ; blockchain_source_address : string option
@@ -159,15 +148,15 @@ type t =
   ; blockchain_deposit_address : string option
        [@key "blockchainDepositAddress"] [@default None] [@yojson_drop_if Option.is_none]
   ; blockchain_destination_address : string option
-       [@key "blockchainDestinationAddress"] [@default None] [@yojson_drop_if Option.is_none]
+       [@key "blockchainDestinationAddress"]
+       [@default None]
+       [@yojson_drop_if Option.is_none]
   ; blockchain_confirmations : int option
        [@key "blockchainConfirmations"] [@default None] [@yojson_drop_if Option.is_none]
   ; other_crypto_identifier : string option
        [@key "otherCryptoIdentifier"] [@default None] [@yojson_drop_if Option.is_none]
-  ; iban : string option
-       [@default None] [@yojson_drop_if Option.is_none]
-  ; bic : string option
-       [@default None] [@yojson_drop_if Option.is_none]
+  ; iban : string option [@default None] [@yojson_drop_if Option.is_none]
+  ; bic : string option [@default None] [@yojson_drop_if Option.is_none]
   ; banking_transaction_id : string option
        [@key "bankingTransactionId"] [@default None] [@yojson_drop_if Option.is_none]
   ; banking_sender_iban : string option

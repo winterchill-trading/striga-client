@@ -3,8 +3,8 @@
     USDC addresses that later debits can use with lighter factors).
 
     The application manages passwords and sessions itself and reports failed logins and
-    password resets through {!record_event}. Passkey ceremonies need a browser and are
-    not wrapped here. *)
+    password resets through {!record_event}. Passkey ceremonies need a browser and are not
+    wrapped here. *)
 
 open! Core
 open! Async
@@ -13,14 +13,15 @@ module Totp_enrollment : sig
   type t =
     { secret : Wire.Hidden_string.t (** pass back to {!complete_totp} *)
     ; secret_base32_encoded : Wire.Hidden_string.t option
-        (** what authenticator apps take; {!Totp.code_of_base32} computes codes from it *)
+    (** what authenticator apps take; {!Totp.code_of_base32} computes codes from it *)
     ; totp_uri : Wire.Hidden_string.t option (** [otpauth://...] for a QR code *)
     }
   [@@deriving sexp_of, equal, yojson]
 end
 
 module Recovery_codes : sig
-  type t = { recovery_codes : Wire.Hidden_string.t list } [@@deriving sexp_of, equal, yojson]
+  type t = { recovery_codes : Wire.Hidden_string.t list }
+  [@@deriving sexp_of, equal, yojson]
 end
 
 (** Depends on the factor: [sms] gives a challenge id, [totp] gives [ok], [passkey] gives

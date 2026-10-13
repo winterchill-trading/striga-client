@@ -23,8 +23,7 @@ let%expect_test "initiations (docs examples)" =
       print_s
         [%message
           f
-            ~type_:
-              (Option.bind tx ~f:(fun t -> t.tx_type) : Transaction.Tx_type.t option)
+            ~type_:(Option.bind tx ~f:(fun t -> t.tx_type) : Transaction.Tx_type.t option)
             ~status:(Option.bind tx ~f:(fun t -> t.status) : string option)
             ~amount:(Option.bind tx ~f:(fun t -> t.amount) : string option)
             ~fee:
@@ -37,7 +36,8 @@ let%expect_test "initiations (docs examples)" =
             ~methods:
               (i.available_verification_methods
                : Common.Verification_method.t list option)]);
-  [%expect {|
+  [%expect
+    {|
     (docs-swap-initiated.json (type_ (Swap_currency_initiated))
      (status (PENDING_2FA_CONFIRMATION)) (amount (2000)) (fee (0))
      (methods ((Sms))))
@@ -65,7 +65,8 @@ let%expect_test "rates (sandbox)" =
   print_s [%sexp (List.map r ~f:fst : string list)];
   (* MATICEUR has no [currency] and a stale timestamp: kept, not rejected. *)
   print_s [%sexp (Exchange.Rates.find r ~ticker:"MATICEUR" : Exchange.Rate.t option)];
-  [%expect {|
+  [%expect
+    {|
     (ETHEUR MATICEUR USDCEUR BTCEUR BTCUSDC BNBEUR POLEUR SOLEUR)
     (((price (0.21)) (buy (0.22)) (sell (0.19)) (timestamp (1747670876835))
       (h_timestamp (2025-05-19T16:07:56.835Z)) (currency ())))
@@ -81,7 +82,8 @@ let%expect_test "Lightning deposit invoice (sandbox)" =
       Payment.Lightning_invoice.equal
   in
   print_s [%sexp (i : Payment.Lightning_invoice.t)];
-  [%expect {|
+  [%expect
+    {|
     ((id (eeee000000000000000000000000000000000000000000000000000000000014))
      (description ("sandbox topup")) (amount (10000))
      (invoice lnbcrt100u1p<redacted>) (expiry (1792015520)) (proposed_rate ())
@@ -141,7 +143,8 @@ let%expect_test "whitelists, validation, resend and fee estimate (docs examples)
       Common.Fee_estimate.equal
   in
   print_s [%sexp (f : Common.Fee_estimate.t)];
-  [%expect {|
+  [%expect
+    {|
     ((currency (BTC)) (status (ACTIVATED)) (internal (true)))
     ((currency (USDC_POLYGON)) (status (ACTIVATED)) (internal (false)))
     ((currency (BTC)) (status (ACTIVATED)) (internal (false)))

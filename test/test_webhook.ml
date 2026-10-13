@@ -42,7 +42,8 @@ let%expect_test "documented webhook payloads route by path and shape" =
   show "/webhooks/striga/card/watch" {|{"cardId":"c1","status":"EXPIRED"}|};
   show "/webhooks/striga/ping" {|{"hello":"world","uid":"u","ts":1}|};
   show "/webhooks/striga/tx" {|{"type":"COUNTERPARTY_DECLARATION_REQUIRED","userId":"u"}|};
-  [%expect {|
+  [%expect
+    {|
     (kyc (status (Rejected)) (details ((BAD_PROOF_OF_ADDRESS))))
     (tx (type_ (Intra_ledger_send)) (debit (100000)) (credit ()))
     (card (type_ (Card_authorization))
@@ -68,7 +69,8 @@ let%expect_test "bad or missing signatures are refused" =
   try_ [ "signature", String.make 64 '0' ];
   try_
     [ "signature", Signature.webhook_signature ~api_key:(Secret.of_string "other") body ];
-  [%expect {|
+  [%expect
+    {|
     (Error "webhook has no signature header")
     (Error "webhook signature does not match")
     (Error "webhook signature does not match")

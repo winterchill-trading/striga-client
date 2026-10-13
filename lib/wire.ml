@@ -110,5 +110,6 @@ let decode name of_yojson json =
   | v -> Ok v
   | exception Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (exn, _) ->
     Or_error.error_s [%message "unexpected JSON shape" name ~_:(exn : exn)]
-  | exception exn -> Or_error.error_s [%message "unexpected JSON shape" name ~_:(exn : exn)]
+  | exception exn ->
+    Or_error.error_s [%message "unexpected JSON shape" name ~_:(exn : exn)]
 ;;

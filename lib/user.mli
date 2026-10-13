@@ -92,7 +92,7 @@ type t =
   ; user_handle : string option
   ; email : string option
   ; mobile : Common.Mobile.t option
-      (** the sandbox replaces the number it was given with a random one *)
+  (** the sandbox replaces the number it was given with a random one *)
   ; date_of_birth : Common.Date_of_birth.t option
   ; address : Common.Address.t option
   ; kyc : Kyc.t option
@@ -143,7 +143,11 @@ val get : Transport.t -> user_id:string -> t Or_error.t Deferred.t
 val get_by_email : Transport.t -> email:string -> t Or_error.t Deferred.t
 
 (** [code] is ["123456"] in the sandbox. *)
-val verify_email : Transport.t -> user_id:string -> code:string -> unit Or_error.t Deferred.t
+val verify_email
+  :  Transport.t
+  -> user_id:string
+  -> code:string
+  -> unit Or_error.t Deferred.t
 
 val verify_mobile
   :  Transport.t

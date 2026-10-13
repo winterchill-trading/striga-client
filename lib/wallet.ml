@@ -4,32 +4,26 @@ open Ppx_yojson_conv_lib.Yojson_conv.Primitives
 
 module Banking_details = struct
   type t =
-    { currency : string option
-         [@default None] [@yojson_drop_if Option.is_none]
-    ; status : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    { currency : string option [@default None] [@yojson_drop_if Option.is_none]
+    ; status : string option [@default None] [@yojson_drop_if Option.is_none]
     ; internal_account_id : string option
          [@key "internalAccountId"] [@default None] [@yojson_drop_if Option.is_none]
     ; bank_country : string option
          [@key "bankCountry"] [@default None] [@yojson_drop_if Option.is_none]
     ; bank_address : string option
          [@key "bankAddress"] [@default None] [@yojson_drop_if Option.is_none]
-    ; iban : string option
-         [@default None] [@yojson_drop_if Option.is_none]
-    ; bic : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; iban : string option [@default None] [@yojson_drop_if Option.is_none]
+    ; bic : string option [@default None] [@yojson_drop_if Option.is_none]
     ; account_number : string option
          [@key "accountNumber"] [@default None] [@yojson_drop_if Option.is_none]
     ; bank_name : string option
          [@key "bankName"] [@default None] [@yojson_drop_if Option.is_none]
     ; bank_account_holder_name : string option
          [@key "bankAccountHolderName"] [@default None] [@yojson_drop_if Option.is_none]
-    ; provider : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; provider : string option [@default None] [@yojson_drop_if Option.is_none]
     ; payment_type : string option
          [@key "paymentType"] [@default None] [@yojson_drop_if Option.is_none]
-    ; domestic : bool option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; domestic : bool option [@default None] [@yojson_drop_if Option.is_none]
     ; pay_in_reference : string option
          [@key "payInReference"] [@default None] [@yojson_drop_if Option.is_none]
     }
@@ -38,12 +32,9 @@ end
 
 module Deposit_address = struct
   type t =
-    { network : string option
-         [@default None] [@yojson_drop_if Option.is_none]
-    ; address : string option
-         [@default None] [@yojson_drop_if Option.is_none]
-    ; status : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    { network : string option [@default None] [@yojson_drop_if Option.is_none]
+    ; address : string option [@default None] [@yojson_drop_if Option.is_none]
+    ; status : string option [@default None] [@yojson_drop_if Option.is_none]
     ; created_at : string option
          [@key "createdAt"] [@default None] [@yojson_drop_if Option.is_none]
     }
@@ -55,8 +46,7 @@ module Account = struct
     { account_id : string [@key "accountId"]
     ; parent_wallet_id : string option
          [@key "parentWalletId"] [@default None] [@yojson_drop_if Option.is_none]
-    ; currency : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; currency : string option [@default None] [@yojson_drop_if Option.is_none]
     ; owner_id : string option
          [@key "ownerId"] [@default None] [@yojson_drop_if Option.is_none]
     ; owner_type : string option
@@ -69,12 +59,9 @@ module Account = struct
          [@key "linkedCardId"] [@default None] [@yojson_drop_if Option.is_none]
     ; linked_bank_account_id : string option
          [@key "linkedBankAccountId"] [@default None] [@yojson_drop_if Option.is_none]
-    ; status : string option
-         [@default None] [@yojson_drop_if Option.is_none]
-    ; permissions : string list option
-         [@default None] [@yojson_drop_if Option.is_none]
-    ; enriched : bool option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; status : string option [@default None] [@yojson_drop_if Option.is_none]
+    ; permissions : string list option [@default None] [@yojson_drop_if Option.is_none]
+    ; enriched : bool option [@default None] [@yojson_drop_if Option.is_none]
     ; parent_application_id : string option
          [@key "parentApplicationId"] [@default None] [@yojson_drop_if Option.is_none]
     ; synced_owner_id : string option
@@ -82,7 +69,9 @@ module Account = struct
     ; account_path : string option
          [@key "accountPath"] [@default None] [@yojson_drop_if Option.is_none]
     ; blockchain_deposit_address : string option
-         [@key "blockchainDepositAddress"] [@default None] [@yojson_drop_if Option.is_none]
+         [@key "blockchainDepositAddress"]
+         [@default None]
+         [@yojson_drop_if Option.is_none]
     ; blockchain_network : Common.Blockchain_network.t option
          [@key "blockchainNetwork"] [@default None] [@yojson_drop_if Option.is_none]
     ; blockchain_networks : Common.Blockchain_network.t list option
@@ -124,8 +113,7 @@ type t =
        [@key "ownerType"] [@default None] [@yojson_drop_if Option.is_none]
   ; created_at : string option
        [@key "createdAt"] [@default None] [@yojson_drop_if Option.is_none]
-  ; comment : string option
-       [@default None] [@yojson_drop_if Option.is_none]
+  ; comment : string option [@default None] [@yojson_drop_if Option.is_none]
   ; wallet_balance : Wire.Num_string.t option
        [@key "walletBalance"] [@default None] [@yojson_drop_if Option.is_none]
   }
@@ -149,10 +137,11 @@ module Enrichment = struct
     { account_id : string [@key "accountId"]
     ; owner_id : string option
          [@key "ownerId"] [@default None] [@yojson_drop_if Option.is_none]
-    ; currency : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; currency : string option [@default None] [@yojson_drop_if Option.is_none]
     ; blockchain_deposit_address : string option
-         [@key "blockchainDepositAddress"] [@default None] [@yojson_drop_if Option.is_none]
+         [@key "blockchainDepositAddress"]
+         [@default None]
+         [@yojson_drop_if Option.is_none]
     ; blockchain_network : Common.Blockchain_network.t option
          [@key "blockchainNetwork"] [@default None] [@yojson_drop_if Option.is_none]
     ; blockchain_networks : Common.Blockchain_network.t list option
@@ -161,30 +150,25 @@ module Enrichment = struct
          [@key "multiChainSupport"] [@default None] [@yojson_drop_if Option.is_none]
     ; deposit_addresses : Deposit_address.t list option
          [@key "depositAddresses"] [@default None] [@yojson_drop_if Option.is_none]
-    ; status : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; status : string option [@default None] [@yojson_drop_if Option.is_none]
     ; internal_account_id : string option
          [@key "internalAccountId"] [@default None] [@yojson_drop_if Option.is_none]
     ; bank_country : string option
          [@key "bankCountry"] [@default None] [@yojson_drop_if Option.is_none]
     ; bank_address : string option
          [@key "bankAddress"] [@default None] [@yojson_drop_if Option.is_none]
-    ; iban : string option
-         [@default None] [@yojson_drop_if Option.is_none]
-    ; bic : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; iban : string option [@default None] [@yojson_drop_if Option.is_none]
+    ; bic : string option [@default None] [@yojson_drop_if Option.is_none]
     ; account_number : string option
          [@key "accountNumber"] [@default None] [@yojson_drop_if Option.is_none]
     ; bank_name : string option
          [@key "bankName"] [@default None] [@yojson_drop_if Option.is_none]
     ; bank_account_holder_name : string option
          [@key "bankAccountHolderName"] [@default None] [@yojson_drop_if Option.is_none]
-    ; provider : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; provider : string option [@default None] [@yojson_drop_if Option.is_none]
     ; payment_type : string option
          [@key "paymentType"] [@default None] [@yojson_drop_if Option.is_none]
-    ; domestic : bool option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; domestic : bool option [@default None] [@yojson_drop_if Option.is_none]
     ; pay_in_reference : string option
          [@key "payInReference"] [@default None] [@yojson_drop_if Option.is_none]
     }

@@ -45,13 +45,15 @@ module Account : sig
     ; owner_id : string option
     ; owner_type : string option
     ; created_at : string option
-    ; available_balance : Common.Balance.t option (** in the smallest unit; see [currency] inside *)
+    ; available_balance : Common.Balance.t option
+    (** in the smallest unit; see [currency] inside *)
     ; linked_card_id : string option (** [UNLINKED] when none *)
     ; linked_bank_account_id : string option
     ; status : string option
     ; permissions : string list option
     ; enriched : bool option
-    ; parent_application_id : string option (** the application id ([STRIGA_APPLICATION_ID]) *)
+    ; parent_application_id : string option
+    (** the application id ([STRIGA_APPLICATION_ID]) *)
     ; synced_owner_id : string option
     ; account_path : string option
     ; blockchain_deposit_address : string option

@@ -12,7 +12,10 @@ module Card_type = struct
     [@@deriving sexp, equal, compare]
 
     let table =
-      [ Virtual, "VIRTUAL"; Physical, "PHYSICAL"; Physical_anonymous, "PHYSICAL_ANONYMOUS" ]
+      [ Virtual, "VIRTUAL"
+      ; Physical, "PHYSICAL"
+      ; Physical_anonymous, "PHYSICAL_ANONYMOUS"
+      ]
     ;;
 
     let other s = Other s
@@ -74,12 +77,10 @@ module Card_address = struct
          [@key "addressLine1"] [@default None] [@yojson_drop_if Option.is_none]
     ; address_line2 : string option
          [@key "addressLine2"] [@default None] [@yojson_drop_if Option.is_none]
-    ; city : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; city : string option [@default None] [@yojson_drop_if Option.is_none]
     ; postal_code : string option
          [@key "postalCode"] [@default None] [@yojson_drop_if Option.is_none]
-    ; country : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; country : string option [@default None] [@yojson_drop_if Option.is_none]
     ; country_code : string option
          [@key "countryCode"] [@default None] [@yojson_drop_if Option.is_none]
     ; dispatch_method : string option
@@ -127,8 +128,7 @@ end
 
 type t =
   { id : string
-  ; name : string option
-       [@default None] [@yojson_drop_if Option.is_none]
+  ; name : string option [@default None] [@yojson_drop_if Option.is_none]
   ; type_ : Card_type.t option
        [@key "type"] [@default None] [@yojson_drop_if Option.is_none]
   ; user_id : string option
@@ -139,20 +139,16 @@ type t =
        [@key "expiryData"] [@default None] [@yojson_drop_if Option.is_none]
   ; expiry_date : string option
        [@key "expiryDate"] [@default None] [@yojson_drop_if Option.is_none]
-  ; status : Status.t option
-       [@default None] [@yojson_drop_if Option.is_none]
-  ; address : Card_address.t option
-       [@default None] [@yojson_drop_if Option.is_none]
+  ; status : Status.t option [@default None] [@yojson_drop_if Option.is_none]
+  ; address : Card_address.t option [@default None] [@yojson_drop_if Option.is_none]
   ; delivery_address : Card_address.t option
        [@key "deliveryAddress"] [@default None] [@yojson_drop_if Option.is_none]
   ; is_enrolled_for_3d_secure : bool option
        [@key "isEnrolledFor3dSecure"] [@default None] [@yojson_drop_if Option.is_none]
   ; is_card_3d_secure_activated : bool option
        [@key "isCard3dSecureActivated"] [@default None] [@yojson_drop_if Option.is_none]
-  ; security : Security.t option
-       [@default None] [@yojson_drop_if Option.is_none]
-  ; limits : Limits.t option
-       [@default None] [@yojson_drop_if Option.is_none]
+  ; security : Security.t option [@default None] [@yojson_drop_if Option.is_none]
+  ; limits : Limits.t option [@default None] [@yojson_drop_if Option.is_none]
   ; activated_at : string option
        [@key "activatedAt"] [@default None] [@yojson_drop_if Option.is_none]
   ; linked_account_id : string option
@@ -165,8 +161,7 @@ type t =
        [@key "lastLinkedAccountId"] [@default None] [@yojson_drop_if Option.is_none]
   ; created_at : string option
        [@key "createdAt"] [@default None] [@yojson_drop_if Option.is_none]
-  ; fee : Wire.Raw_json.t option
-       [@default None] [@yojson_drop_if Option.is_none]
+  ; fee : Wire.Raw_json.t option [@default None] [@yojson_drop_if Option.is_none]
   }
 [@@deriving sexp, equal, yojson] [@@yojson.allow_extra_fields]
 
@@ -183,9 +178,12 @@ end
 
 module Card_transaction = struct
   type t =
-    { card_id : string option [@key "cardId"] [@default None] [@yojson_drop_if Option.is_none]
+    { card_id : string option
+         [@key "cardId"] [@default None] [@yojson_drop_if Option.is_none]
     ; related_card_transaction_id : string option
-         [@key "relatedCardTransactionId"] [@default None] [@yojson_drop_if Option.is_none]
+         [@key "relatedCardTransactionId"]
+         [@default None]
+         [@yojson_drop_if Option.is_none]
     ; type_ : Transaction.Tx_type.t option
          [@key "type"] [@default None] [@yojson_drop_if Option.is_none]
     ; original_amount : Wire.Num_string.t option
@@ -208,8 +206,7 @@ module Card_transaction = struct
          [@key "merchantCategoryCode"] [@default None] [@yojson_drop_if Option.is_none]
     ; account_transaction_id : string option
          [@key "accountTransactionId"] [@default None] [@yojson_drop_if Option.is_none]
-    ; order : Wire.Raw_json.t option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; order : Wire.Raw_json.t option [@default None] [@yojson_drop_if Option.is_none]
     ; linked_account_id : string option
          [@key "linkedAccountId"] [@default None] [@yojson_drop_if Option.is_none]
     ; linked_account_currency : string option
@@ -221,13 +218,21 @@ module Card_transaction = struct
     ; decline_details : string option
          [@key "declineDetails"] [@default None] [@yojson_drop_if Option.is_none]
     ; merchant_transaction_amount : Wire.Num_string.t option
-         [@key "merchantTransactionAmount"] [@default None] [@yojson_drop_if Option.is_none]
+         [@key "merchantTransactionAmount"]
+         [@default None]
+         [@yojson_drop_if Option.is_none]
     ; merchant_transaction_currency : string option
-         [@key "merchantTransactionCurrency"] [@default None] [@yojson_drop_if Option.is_none]
+         [@key "merchantTransactionCurrency"]
+         [@default None]
+         [@yojson_drop_if Option.is_none]
     ; account_transaction_amount : Wire.Num_string.t option
-         [@key "accountTransactionAmount"] [@default None] [@yojson_drop_if Option.is_none]
+         [@key "accountTransactionAmount"]
+         [@default None]
+         [@yojson_drop_if Option.is_none]
     ; account_transaction_currency : string option
-         [@key "accountTransactionCurrency"] [@default None] [@yojson_drop_if Option.is_none]
+         [@key "accountTransactionCurrency"]
+         [@default None]
+         [@yojson_drop_if Option.is_none]
     }
   [@@deriving sexp, equal, yojson] [@@yojson.allow_extra_fields]
 
@@ -254,9 +259,9 @@ module Pan_ui = struct
     | Some application_id, Some ui_secret ->
       Ok
         (`Assoc
-            [ "uiSecret", `String (Secret.reveal ui_secret)
-            ; "applicationId", `String application_id
-            ])
+          [ "uiSecret", `String (Secret.reveal ui_secret)
+          ; "applicationId", `String application_id
+          ])
     | _ ->
       Or_error.error_string
         "the card PAN UI needs STRIGA_APPLICATION_ID and STRIGA_UI_SECRET"
@@ -315,7 +320,13 @@ let burn tr ~card_id =
 ;;
 
 let report_missing tr ~card_id =
-  Call.json tr `POST "/card/report-missing" ~body:(card_body card_id []) ~name:"Card.t" card
+  Call.json
+    tr
+    `POST
+    "/card/report-missing"
+    ~body:(card_body card_id [])
+    ~name:"Card.t"
+    card
 ;;
 
 let update_limits tr ~card_id ~limits =
@@ -339,10 +350,10 @@ let update_security tr ~card_id ~contactless ~withdrawal ~internet_purchase =
          [ ( "security"
            , Some
                (`Assoc
-                   [ "contactlessEnabled", `Bool contactless
-                   ; "withdrawalEnabled", `Bool withdrawal
-                   ; "internetPurchaseEnabled", `Bool internet_purchase
-                   ]) )
+                 [ "contactlessEnabled", `Bool contactless
+                 ; "withdrawalEnabled", `Bool withdrawal
+                 ; "internetPurchaseEnabled", `Bool internet_purchase
+                 ]) )
          ])
     ~name:"Card.t"
     card
@@ -354,12 +365,19 @@ let update_3ds tr ~card_id ~three_d_secure_password =
     `PATCH
     "/card/3ds"
     ~body:
-      (card_body card_id [ "threeDSecurePassword", Some (`String three_d_secure_password) ])
+      (card_body
+         card_id
+         [ "threeDSecurePassword", Some (`String three_d_secure_password) ])
     ()
 ;;
 
 let set_pin tr ~card_id ~pin =
-  Call.unit tr `PATCH "/card/set-pin" ~body:(card_body card_id [ "pin", Some (`String pin) ]) ()
+  Call.unit
+    tr
+    `PATCH
+    "/card/set-pin"
+    ~body:(card_body card_id [ "pin", Some (`String pin) ])
+    ()
 ;;
 
 let link_account tr ~card_id ~account_id =
@@ -395,10 +413,10 @@ let confirm_consent tr ~user_id ~challenge_id ~code =
     "/card/confirm-consent"
     ~body:
       (`Assoc
-          [ "userId", `String user_id
-          ; "challengeId", `String challenge_id
-          ; "verificationCode", `String code
-          ])
+        [ "userId", `String user_id
+        ; "challengeId", `String challenge_id
+        ; "verificationCode", `String code
+        ])
     ~name:"Card.Consent.t"
     Consent.t_of_yojson
 ;;
@@ -414,5 +432,10 @@ let resend_consent_code tr ~user_id ~challenge_id =
 ;;
 
 let revoke_consents tr ~user_id =
-  Call.unit tr `POST "/card/revoke-consents" ~body:(`Assoc [ "userId", `String user_id ]) ()
+  Call.unit
+    tr
+    `POST
+    "/card/revoke-consents"
+    ~body:(`Assoc [ "userId", `String user_id ])
+    ()
 ;;

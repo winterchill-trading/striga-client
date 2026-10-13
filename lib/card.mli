@@ -114,7 +114,8 @@ module Card_transaction : sig
     { card_id : string option (** webhooks only *)
     ; related_card_transaction_id : string option
     ; type_ : Transaction.Tx_type.t option
-    ; original_amount : Wire.Num_string.t option (** in whole units of [original_currency], e.g. 12.34 *)
+    ; original_amount : Wire.Num_string.t option
+    (** in whole units of [original_currency], e.g. 12.34 *)
     ; original_currency : string option
     ; transaction_amount : Wire.Num_string.t option
     ; transaction_currency : string option

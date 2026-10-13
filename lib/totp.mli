@@ -1,5 +1,5 @@
-(** RFC 6238 time-based one-time passwords (HMAC-SHA1, 30 s steps, 6 digits), the codes
-    an authenticator app shows. Used by the live sandbox walk and dev tools to act as the
+(** RFC 6238 time-based one-time passwords (HMAC-SHA1, 30 s steps, 6 digits), the codes an
+    authenticator app shows. Used by the live sandbox walk and dev tools to act as the
     user's authenticator; a real application never holds the user's TOTP secret. *)
 
 open! Core

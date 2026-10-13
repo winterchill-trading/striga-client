@@ -7,14 +7,15 @@ module Initiated = struct
     { challenge_id : string [@key "challengeId"]
     ; date_expires : string option
          [@key "dateExpires"] [@default None] [@yojson_drop_if Option.is_none]
-    ; transaction : Transaction.t option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; transaction : Transaction.t option [@default None] [@yojson_drop_if Option.is_none]
     ; fee_estimate : Common.Fee_estimate.t option
          [@key "feeEstimate"] [@default None] [@yojson_drop_if Option.is_none]
     ; verification_method : Common.Verification_method.t option
          [@key "verificationMethod"] [@default None] [@yojson_drop_if Option.is_none]
     ; available_verification_methods : Common.Verification_method.t list option
-         [@key "availableVerificationMethods"] [@default None] [@yojson_drop_if Option.is_none]
+         [@key "availableVerificationMethods"]
+         [@default None]
+         [@yojson_drop_if Option.is_none]
     ; fallback_via_resend : bool option
          [@key "fallbackViaResend"] [@default None] [@yojson_drop_if Option.is_none]
     }
@@ -23,19 +24,17 @@ end
 
 module Lightning_invoice = struct
   type t =
-    { id : string option
-         [@default None] [@yojson_drop_if Option.is_none]
-    ; description : string option
-         [@default None] [@yojson_drop_if Option.is_none]
-    ; amount : Wire.Num_string.t option
-         [@default None] [@yojson_drop_if Option.is_none]
+    { id : string option [@default None] [@yojson_drop_if Option.is_none]
+    ; description : string option [@default None] [@yojson_drop_if Option.is_none]
+    ; amount : Wire.Num_string.t option [@default None] [@yojson_drop_if Option.is_none]
     ; invoice : string
-    ; expiry : Wire.Num_string.t option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; expiry : Wire.Num_string.t option [@default None] [@yojson_drop_if Option.is_none]
     ; proposed_rate : string option
          [@key "proposedRate"] [@default None] [@yojson_drop_if Option.is_none]
     ; fill_or_kill_at_proposed_rate : bool option
-         [@key "fillOrKillAtProposedRate"] [@default None] [@yojson_drop_if Option.is_none]
+         [@key "fillOrKillAtProposedRate"]
+         [@default None]
+         [@yojson_drop_if Option.is_none]
     }
   [@@deriving sexp, equal, yojson] [@@yojson.allow_extra_fields]
 end
@@ -43,18 +42,13 @@ end
 module Whitelisted_address = struct
   type t =
     { id : string
-    ; status : string option
-         [@default None] [@yojson_drop_if Option.is_none]
-    ; address : string option
-         [@default None] [@yojson_drop_if Option.is_none]
-    ; currency : string option
-         [@default None] [@yojson_drop_if Option.is_none]
-    ; label : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; status : string option [@default None] [@yojson_drop_if Option.is_none]
+    ; address : string option [@default None] [@yojson_drop_if Option.is_none]
+    ; currency : string option [@default None] [@yojson_drop_if Option.is_none]
+    ; label : string option [@default None] [@yojson_drop_if Option.is_none]
     ; network : Common.Blockchain_network.t option
          [@default None] [@yojson_drop_if Option.is_none]
-    ; internal : bool option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; internal : bool option [@default None] [@yojson_drop_if Option.is_none]
     ; internal_account_id : string option
          [@key "internalAccountId"] [@default None] [@yojson_drop_if Option.is_none]
     ; created_at : string option
@@ -66,16 +60,12 @@ end
 module Whitelisted_iban = struct
   type t =
     { id : string
-    ; iban : string option
-         [@default None] [@yojson_drop_if Option.is_none]
-    ; bic : string option
-         [@default None] [@yojson_drop_if Option.is_none]
-    ; label : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; iban : string option [@default None] [@yojson_drop_if Option.is_none]
+    ; bic : string option [@default None] [@yojson_drop_if Option.is_none]
+    ; label : string option [@default None] [@yojson_drop_if Option.is_none]
     ; payment_type : string option
          [@key "paymentType"] [@default None] [@yojson_drop_if Option.is_none]
-    ; status : string option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; status : string option [@default None] [@yojson_drop_if Option.is_none]
     ; owner_type : string option
          [@key "ownerType"] [@default None] [@yojson_drop_if Option.is_none]
     ; synced_owner_id : string option
@@ -84,8 +74,7 @@ module Whitelisted_iban = struct
          [@key "parentApplicationId"] [@default None] [@yojson_drop_if Option.is_none]
     ; created_at : string option
          [@key "createdAt"] [@default None] [@yojson_drop_if Option.is_none]
-    ; validation : Wire.Raw_json.t option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; validation : Wire.Raw_json.t option [@default None] [@yojson_drop_if Option.is_none]
     }
   [@@deriving sexp, equal, yojson] [@@yojson.allow_extra_fields]
 end
@@ -112,10 +101,8 @@ module Sepa_validation = struct
   type t =
     { payment_type : string option
          [@key "paymentType"] [@default None] [@yojson_drop_if Option.is_none]
-    ; valid : bool option
-         [@default None] [@yojson_drop_if Option.is_none]
-    ; messages : Wire.Raw_json.t option
-         [@default None] [@yojson_drop_if Option.is_none]
+    ; valid : bool option [@default None] [@yojson_drop_if Option.is_none]
+    ; messages : Wire.Raw_json.t option [@default None] [@yojson_drop_if Option.is_none]
     }
   [@@deriving sexp, equal, yojson] [@@yojson.allow_extra_fields]
 end
@@ -124,8 +111,17 @@ let s v = Option.map v ~f:(fun s -> `String s)
 let vm v = Option.map v ~f:Common.Verification_method.yojson_of_t
 let initiated = Initiated.t_of_yojson
 
-let ledger path tr ~user_id ~source_account_id ~destination_account_id ~amount ?memo
-  ?verification_method () =
+let ledger
+  path
+  tr
+  ~user_id
+  ~source_account_id
+  ~destination_account_id
+  ~amount
+  ?memo
+  ?verification_method
+  ()
+  =
   Call.json
     tr
     `POST
@@ -363,11 +359,11 @@ let validate_sepa_beneficiary tr ~user_id ~source_account_id ~iban ~bic =
     "/wallets/validate-sepa-beneficiary"
     ~body:
       (`Assoc
-          [ "userId", `String user_id
-          ; "sourceAccountId", `String source_account_id
-          ; "iban", `String iban
-          ; "bic", `String bic
-          ])
+        [ "userId", `String user_id
+        ; "sourceAccountId", `String source_account_id
+        ; "iban", `String iban
+        ; "bic", `String bic
+        ])
     ~name:"Payment.Sepa_validation.t list"
     (list_of_yojson Sepa_validation.t_of_yojson)
 ;;

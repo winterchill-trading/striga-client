@@ -1,6 +1,6 @@
-(** Ledger transactions, as they appear in account statements, transaction lookups,
-    OTP confirmations and the [/tx] webhook. Amounts are in the smallest unit of the
-    account currency. *)
+(** Ledger transactions, as they appear in account statements, transaction lookups, OTP
+    confirmations and the [/tx] webhook. Amounts are in the smallest unit of the account
+    currency. *)
 
 open! Core
 
