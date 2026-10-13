@@ -49,6 +49,7 @@ module Verification_method : sig
   [@@deriving sexp, equal, compare, yojson]
 
   val to_string : t -> string
+  val of_string : string -> t
 end
 
 (** An OTP challenge: an SMS code was sent (or a TOTP/passkey proof is due). *)

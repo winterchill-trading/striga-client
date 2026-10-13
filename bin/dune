@@ -1,0 +1,7 @@
+(executable
+ (name main)
+ (public_name striga)
+ (package striga-client)
+ (libraries core async core_unix.command_unix striga-client yojson)
+ (preprocess
+  (pps ppx_jane)))
