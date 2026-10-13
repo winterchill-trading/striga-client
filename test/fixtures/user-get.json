@@ -1,0 +1,67 @@
+{
+  "firstName": "Ada",
+  "lastName": "Sandbox",
+  "userHandle": "ada.sandbox.6tyh",
+  "email": "hello+striga-1791929027@winterchill.xyz",
+  "mobile": {
+    "countryCode": "+372",
+    "number": "59892958"
+  },
+  "dateOfBirth": {
+    "year": "1990",
+    "month": "1",
+    "day": "15"
+  },
+  "address": {
+    "addressLine1": "Sepapaja 6",
+    "city": "Tallinn",
+    "postalCode": "11415",
+    "country": "EE"
+  },
+  "KYC": {
+    "emailVerified": true,
+    "mobileVerified": true,
+    "status": "NOT_STARTED",
+    "currentTier": 0,
+    "tier0": {
+      "eligible": true,
+      "status": "NOT_STARTED",
+      "outboundLimitConsumed": "0",
+      "outboundLimitAllowed": "1500000"
+    },
+    "tier1": {
+      "eligible": true,
+      "status": "NOT_STARTED",
+      "inboundLimitConsumed": {
+        "all": "0",
+        "va": "0"
+      },
+      "inboundLimitAllowed": {
+        "all": "2500000",
+        "va": "1500000"
+      },
+      "outboundLimitConsumed": "0",
+      "outboundLimitAllowed": "1000000"
+    },
+    "tier2": {
+      "eligible": false,
+      "status": "NOT_STARTED",
+      "outboundLimitConsumed": "0",
+      "outboundLimitAllowed": "10000000"
+    },
+    "tier3": {
+      "eligible": false,
+      "status": "NOT_STARTED",
+      "outboundLimitConsumed": "0",
+      "outboundLimitAllowed": "10000000"
+    },
+    "rejectionComments": {}
+  },
+  "multiFactorAuth": {
+    "enabled": false,
+    "enrolledMethods": [],
+    "passkeyCount": 0
+  },
+  "userId": "00000000-0000-4000-8000-000000000001",
+  "createdAt": 1791929027997
+}
