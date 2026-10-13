@@ -50,7 +50,8 @@ let%expect_test "missing credentials" =
 
 let%expect_test "the application id is not printed either" =
   show (Config.of_env ~getenv:(env (("STRIGA_APPLICATION_ID", "app-123") :: creds)) ());
-  [%expect {|
+  [%expect
+    {|
     ((base_url https://www.sandbox.striga.com/api/v1) (api_key <redacted>)
      (api_secret <redacted>) (application_id (<set>)) (ui_secret ())
      (live false))
