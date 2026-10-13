@@ -1,5 +1,6 @@
 (** Async client for the Striga v1 API (https://docs.striga.com). *)
 
+module Api_error = Api_error
 module Config = Config
 module Redact = Redact
 module Secret = Secret
