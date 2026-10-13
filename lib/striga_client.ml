@@ -1,5 +1,6 @@
 module Api_error = Api_error
 module Call = Call
+module Card = Card
 module Common = Common
 module Exchange = Exchange
 module Config = Config
