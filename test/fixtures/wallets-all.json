@@ -1,0 +1,176 @@
+{
+  "wallets": [
+    {
+      "walletId": "00000000-0000-4000-8000-000000000002",
+      "accounts": {
+        "BTC": {
+          "accountId": "ffff0000000000000000000000000003",
+          "parentWalletId": "00000000-0000-4000-8000-000000000002",
+          "currency": "BTC",
+          "ownerId": "00000000-0000-4000-8000-000000000001",
+          "ownerType": "CONSUMER",
+          "createdAt": "2026-10-13T22:04:04.574Z",
+          "availableBalance": {
+            "amount": "0",
+            "currency": "satoshis",
+            "hAmount": "0.00000000",
+            "fiatEquivalentBalance": "0",
+            "fiatCurrency": "EUR",
+            "hFiatEquivalentBalance": "0",
+            "rate": "74462.5"
+          },
+          "linkedCardId": "UNLINKED",
+          "status": "ACTIVE",
+          "permissions": [
+            "CUSTODY",
+            "TRADE",
+            "INTER",
+            "INTRA"
+          ],
+          "enriched": false,
+          "parentApplicationId": "00000000-0000-4000-8000-0000000000aa",
+          "syncedOwnerId": "00000000-0000-4000-8000-000000000001",
+          "accountPath": "00000000-0000-4000-8000-000000000002:BTC",
+          "blockchainNetworks": [],
+          "multiChainSupport": false,
+          "depositAddresses": []
+        },
+        "BNB": {
+          "accountId": "ffff0000000000000000000000000004",
+          "parentWalletId": "00000000-0000-4000-8000-000000000002",
+          "currency": "BNB",
+          "ownerId": "00000000-0000-4000-8000-000000000001",
+          "ownerType": "CONSUMER",
+          "createdAt": "2026-10-13T22:04:04.576Z",
+          "availableBalance": {
+            "amount": "0",
+            "currency": "wei",
+            "hAmount": "0.0",
+            "fiatEquivalentBalance": "0",
+            "fiatCurrency": "EUR",
+            "hFiatEquivalentBalance": "0",
+            "rate": "662.18"
+          },
+          "linkedCardId": "UNLINKED",
+          "status": "ACTIVE",
+          "permissions": [
+            "CUSTODY",
+            "TRADE",
+            "INTER",
+            "INTRA"
+          ],
+          "enriched": false,
+          "parentApplicationId": "00000000-0000-4000-8000-0000000000aa",
+          "syncedOwnerId": "00000000-0000-4000-8000-000000000001",
+          "accountPath": "00000000-0000-4000-8000-000000000002:BNB",
+          "blockchainNetworks": [],
+          "multiChainSupport": false,
+          "depositAddresses": []
+        },
+        "ETH": {
+          "accountId": "ffff0000000000000000000000000005",
+          "parentWalletId": "00000000-0000-4000-8000-000000000002",
+          "currency": "ETH",
+          "ownerId": "00000000-0000-4000-8000-000000000001",
+          "ownerType": "CONSUMER",
+          "createdAt": "2026-10-13T22:04:04.575Z",
+          "availableBalance": {
+            "amount": "0",
+            "currency": "wei",
+            "hAmount": "0.0",
+            "fiatEquivalentBalance": "0",
+            "fiatCurrency": "EUR",
+            "hFiatEquivalentBalance": "0",
+            "rate": "2239.22"
+          },
+          "linkedCardId": "UNLINKED",
+          "status": "ACTIVE",
+          "permissions": [
+            "CUSTODY",
+            "TRADE",
+            "INTER",
+            "INTRA"
+          ],
+          "enriched": false,
+          "parentApplicationId": "00000000-0000-4000-8000-0000000000aa",
+          "syncedOwnerId": "00000000-0000-4000-8000-000000000001",
+          "accountPath": "00000000-0000-4000-8000-000000000002:ETH",
+          "blockchainNetworks": [],
+          "multiChainSupport": false,
+          "depositAddresses": []
+        },
+        "POL": {
+          "accountId": "ffff0000000000000000000000000006",
+          "parentWalletId": "00000000-0000-4000-8000-000000000002",
+          "currency": "POL",
+          "ownerId": "00000000-0000-4000-8000-000000000001",
+          "ownerType": "CONSUMER",
+          "createdAt": "2026-10-13T22:04:04.576Z",
+          "availableBalance": {
+            "amount": "0",
+            "currency": "wei",
+            "hAmount": "0.0",
+            "fiatEquivalentBalance": "0",
+            "fiatCurrency": "EUR",
+            "hFiatEquivalentBalance": "0",
+            "rate": "0.09112"
+          },
+          "linkedCardId": "UNLINKED",
+          "status": "ACTIVE",
+          "permissions": [
+            "CUSTODY",
+            "TRADE",
+            "INTER",
+            "INTRA"
+          ],
+          "enriched": false,
+          "parentApplicationId": "00000000-0000-4000-8000-0000000000aa",
+          "syncedOwnerId": "00000000-0000-4000-8000-000000000001",
+          "accountPath": "00000000-0000-4000-8000-000000000002:POL",
+          "blockchainNetworks": [],
+          "multiChainSupport": false,
+          "depositAddresses": []
+        },
+        "SOL": {
+          "accountId": "ffff0000000000000000000000000007",
+          "parentWalletId": "00000000-0000-4000-8000-000000000002",
+          "currency": "SOL",
+          "ownerId": "00000000-0000-4000-8000-000000000001",
+          "ownerType": "CONSUMER",
+          "createdAt": "2026-10-13T22:04:04.577Z",
+          "availableBalance": {
+            "amount": "0",
+            "currency": "lamports",
+            "hAmount": "0.000000000",
+            "fiatEquivalentBalance": "0",
+            "fiatCurrency": "EUR",
+            "hFiatEquivalentBalance": "0",
+            "rate": "95.48"
+          },
+          "linkedCardId": "UNLINKED",
+          "status": "ACTIVE",
+          "permissions": [
+            "CUSTODY",
+            "TRADE",
+            "INTER",
+            "INTRA"
+          ],
+          "enriched": false,
+          "parentApplicationId": "00000000-0000-4000-8000-0000000000aa",
+          "syncedOwnerId": "00000000-0000-4000-8000-000000000001",
+          "accountPath": "00000000-0000-4000-8000-000000000002:SOL",
+          "blockchainNetworks": [],
+          "multiChainSupport": false,
+          "depositAddresses": []
+        }
+      },
+      "syncedOwnerId": "00000000-0000-4000-8000-000000000001",
+      "ownerType": "CONSUMER",
+      "createdAt": "2026-10-13T22:04:04.611Z",
+      "comment": "DEFAULT",
+      "walletBalance": "0"
+    }
+  ],
+  "count": 1,
+  "total": 1
+}

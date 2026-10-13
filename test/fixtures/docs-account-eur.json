@@ -1,0 +1,47 @@
+{
+  "accountId": "ffff0000000000000000000000000015",
+  "parentWalletId": "00000000-0000-4000-8000-000000000016",
+  "currency": "EUR",
+  "ownerId": "00000000-0000-4000-8000-000000000017",
+  "ownerType": "CONSUMER",
+  "createdAt": "2024-08-28T13:30:45.640Z",
+  "availableBalance": {
+    "amount": "0",
+    "currency": "cents",
+    "hAmount": "0",
+    "fiatEquivalentBalance": "0",
+    "fiatCurrency": "EUR",
+    "hFiatEquivalentBalance": "0",
+    "rate": "1"
+  },
+  "linkedCardId": "UNLINKED",
+  "linkedBankAccountId": "EUR00000000007233",
+  "status": "ACTIVE",
+  "permissions": [
+    "CUSTODY",
+    "TRADE",
+    "INTER",
+    "INTRA"
+  ],
+  "enriched": true,
+  "parentApplicationId": "00000000-0000-4000-8000-0000000000aa",
+  "syncedOwnerId": "00000000-0000-4000-8000-000000000017",
+  "accountPath": "00000000-0000-4000-8000-000000000016:EUR",
+  "bankingDetails": {
+    "currency": "EUR",
+    "status": "ACTIVE",
+    "internalAccountId": "EUR00000000007233",
+    "bankCountry": "GB",
+    "bankAddress": "The Bower, 207-211 Old Street, London, England, EC1V 9NR",
+    "iban": "GB10000000000000006392",
+    "bic": "SEOUGB21",
+    "accountNumber": "000006392",
+    "bankName": "Simulator Bank",
+    "bankAccountHolderName": "ADA SANDBOX",
+    "provider": "SIMULATOR",
+    "paymentType": null,
+    "domestic": false,
+    "routingCodeEntries": [],
+    "payInReference": null
+  }
+}
