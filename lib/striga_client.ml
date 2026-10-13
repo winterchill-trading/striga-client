@@ -10,6 +10,7 @@ module Secret = Secret
 module Signature = Signature
 module Standing_order = Standing_order
 module Tls = Tls
+module Totp = Totp
 module Transaction = Transaction
 module Transport = Transport
 module User = User
