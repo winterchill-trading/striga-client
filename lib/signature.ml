@@ -4,7 +4,10 @@ let hex s = Cryptokit.transform_string (Cryptokit.Hexa.encode ()) s
 let empty_body = "{}"
 
 let body_digest body =
-  hex (Cryptokit.hash_string (Cryptokit.Hash.md5 ()) (Option.value body ~default:empty_body))
+  hex
+    (Cryptokit.hash_string
+       (Cryptokit.Hash.md5 ())
+       (Option.value body ~default:empty_body))
 ;;
 
 let signing_input ~time_ms ~meth ~path ~body =
@@ -27,7 +30,7 @@ let webhook_signature ~api_key body = hmac_sha256 ~key:(Secret.reveal api_key) b
 let constant_time_equal a b =
   String.length a = String.length b
   && String.foldi a ~init:0 ~f:(fun i acc c ->
-    acc lor (Char.to_int c lxor Char.to_int b.[i]))
+       acc lor (Char.to_int c lxor Char.to_int b.[i]))
      = 0
 ;;
 

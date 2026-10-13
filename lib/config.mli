@@ -5,8 +5,8 @@
       signs requests.
     - [STRIGA_BASE_URL] (optional, default {!sandbox_base_url}).
     - [STRIGA_APPLICATION_ID] and [STRIGA_UI_SECRET] (optional): only used by the browser
-      card PAN UI component ([StrigaUXPlugin.create(UI_SECRET, {applicationId})]); the REST
-      API never needs them. [APPLICATION_ID] is also the [parentApplicationId] that
+      card PAN UI component ([StrigaUXPlugin.create(UI_SECRET, {applicationId})]); the
+      REST API never needs them. [APPLICATION_ID] is also the [parentApplicationId] that
       accounts and whitelisted IBANs report.
 
     The library defaults to the sandbox: a base URL whose host is not a Striga sandbox

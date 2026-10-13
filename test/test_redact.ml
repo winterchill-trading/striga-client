@@ -5,8 +5,7 @@ let%expect_test "IBANs and card numbers" =
   print_endline (Redact.iban "GB10SEOU19870010266392");
   print_endline (Redact.iban "not an iban");
   print_endline (Redact.pan "4111111111111111");
-  [%expect
-    {|
+  [%expect {|
     GB****************6392
     not an iban
     ************1111

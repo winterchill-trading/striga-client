@@ -50,8 +50,12 @@ let%expect_test "webhook signatures" =
   check ~body ~signature:expected;
   check ~body ~signature:(String.uppercase expected);
   (* Pretty-printed by a proxy: still verifies through the compact form. *)
-  check ~body:{|{ "userId": "u1", "status": "APPROVED", "ts": 1700000000000 }|} ~signature:expected;
-  check ~body:{|{"userId":"u2","status":"APPROVED","ts":1700000000000}|} ~signature:expected;
+  check
+    ~body:{|{ "userId": "u1", "status": "APPROVED", "ts": 1700000000000 }|}
+    ~signature:expected;
+  check
+    ~body:{|{"userId":"u2","status":"APPROVED","ts":1700000000000}|}
+    ~signature:expected;
   check ~body ~signature:"00";
   check ~body:"not json" ~signature:expected;
   [%expect

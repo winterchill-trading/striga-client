@@ -52,10 +52,11 @@ let create
         ; live
         }
     | Some "https", Some host ->
-      (* Sandbox and production share request formats; only the host tells them apart,
-         so anything but the sandbox host needs an explicit opt-in. *)
+      (* Sandbox and production share request formats; only the host tells them apart, so
+         anything but the sandbox host needs an explicit opt-in. *)
       Or_error.error_s
-        [%message "base URL is not the Striga sandbox; pass ~live:true to use it" (host : string)]
+        [%message
+          "base URL is not the Striga sandbox; pass ~live:true to use it" (host : string)]
     | _ -> Or_error.error_string "STRIGA_BASE_URL must be an https URL")
 ;;
 
@@ -75,7 +76,8 @@ let of_env ?(getenv = Sys.getenv) ?live () =
   let required name =
     match non_empty getenv name with
     | Some v -> Ok v
-    | None -> Or_error.error_s [%message "environment variable is not set" (name : string)]
+    | None ->
+      Or_error.error_s [%message "environment variable is not set" (name : string)]
   in
   let%bind api_key = required "STRIGA_API_KEY" in
   let%bind api_secret = required "STRIGA_API_SECRET" in

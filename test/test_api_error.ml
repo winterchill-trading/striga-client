@@ -57,11 +57,8 @@ let%expect_test "status and code survive tagging" =
         ~status:(Api_error.status_of_error e : int option)
         ~code:(Api_error.code_of_error e : string option)];
   print_s
-    [%message
-      ""
-        ~status:(Api_error.status_of_error (Error.of_string "x") : int option)];
-  [%expect
-    {|
+    [%message "" ~status:(Api_error.status_of_error (Error.of_string "x") : int option)];
+  [%expect {|
     ((status (409)) (code (30007)))
     (status ())
     |}]

@@ -43,7 +43,9 @@ let of_response ~meth ~path ~request_id ~redact ~status ~body =
   match Yojson.Safe.from_string body with
   | exception _ ->
     let body = redact (String.strip body) in
-    let body = if String.length body > 1024 then String.prefix body 1024 ^ "..." else body in
+    let body =
+      if String.length body > 1024 then String.prefix body 1024 ^ "..." else body
+    in
     { base with body = (if String.is_empty body then None else Some body) }
   | json ->
     let details = member "errorDetails" json in
@@ -84,7 +86,9 @@ let rec find_tagged (sexp : Sexp.t) =
 ;;
 
 let status_of_error e =
-  match Option.bind (find_tagged (Error.sexp_of_t e)) ~f:(fun v -> find_field v "status") with
+  match
+    Option.bind (find_tagged (Error.sexp_of_t e)) ~f:(fun v -> find_field v "status")
+  with
   | Some (Atom s) -> Int.of_string_opt s
   | _ -> None
 ;;

@@ -2,13 +2,12 @@
     the one-time tokens Striga returns (SumSub tokens, card PAN auth tokens, TOTP secrets,
     recovery codes, PINs).
 
-    Card numbers keep their last 4 digits, IBANs their country code and last 4
-    characters. *)
+    Card numbers keep their last 4 digits, IBANs their country code and last 4 characters. *)
 
 open! Core
 
-(** ["GB10SEOU19870010266392"] -> ["GB****************6392"]. Strings that do not look like
-    an IBAN are returned unchanged. *)
+(** ["GB10SEOU19870010266392"] -> ["GB****************6392"]. Strings that do not look
+    like an IBAN are returned unchanged. *)
 val iban : string -> string
 
 (** All but the last 4 digits become [*]. *)
