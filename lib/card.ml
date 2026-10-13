@@ -183,7 +183,8 @@ end
 
 module Card_transaction = struct
   type t =
-    { related_card_transaction_id : string option
+    { card_id : string option [@key "cardId"] [@default None] [@yojson_drop_if Option.is_none]
+    ; related_card_transaction_id : string option
          [@key "relatedCardTransactionId"] [@default None] [@yojson_drop_if Option.is_none]
     ; type_ : Transaction.Tx_type.t option
          [@key "type"] [@default None] [@yojson_drop_if Option.is_none]

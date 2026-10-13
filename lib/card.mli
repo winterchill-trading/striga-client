@@ -111,7 +111,8 @@ end
 (** One entry of a card statement (also the shape of card transaction webhooks). *)
 module Card_transaction : sig
   type t =
-    { related_card_transaction_id : string option
+    { card_id : string option (** webhooks only *)
+    ; related_card_transaction_id : string option
     ; type_ : Transaction.Tx_type.t option
     ; original_amount : Wire.Num_string.t option (** in whole units of [original_currency], e.g. 12.34 *)
     ; original_currency : string option
