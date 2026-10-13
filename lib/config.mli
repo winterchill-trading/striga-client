@@ -46,5 +46,5 @@ val of_env : ?getenv:(string -> string option) -> ?live:bool -> unit -> t Or_err
     to skip. *)
 val env_available : ?getenv:(string -> string option) -> unit -> bool
 
-(** Every secret in [t] (key, secret, UI secret), for redaction. *)
+(** Every value in [t] to keep out of logs (key, secret, UI secret, application id). *)
 val secrets : t -> Secret.t list

@@ -100,4 +100,9 @@ let of_env ?(getenv = Sys.getenv) ?live () =
     ()
 ;;
 
-let secrets t = [ t.api_key; t.api_secret ] @ Option.to_list t.ui_secret
+let secrets t =
+  [ t.api_key; t.api_secret ]
+  @ Option.to_list t.ui_secret
+  (* Error details echo it ([sourceApplicationId]); keep it out of logs too. *)
+  @ Option.to_list (Option.map t.application_id ~f:Secret.of_string)
+;;
