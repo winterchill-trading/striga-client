@@ -75,6 +75,10 @@ Do not poll in a loop.
 - Some payouts cannot be exercised in the sandbox (no crypto funding, regtest invoices). The README's
   known gaps list which paths stop at a provider balance or invoice check; a test must not claim more.
 - Each live run creates two sandbox users. Run it deliberately, not in a loop.
+- The request signature covers the MD5 of the parsed JSON body, not the bytes sent. Send compact JSON
+  (no spaces after `:` or `,`), or the check fails although the digest was taken over what went out.
+- Webhook signatures are keyed with the API key, not the secret.
+- Error bodies echo the application id. Add it to the redaction list.
 - The `.env` file in the working tree is gitignored and may hold real values. Never print it, never
   `cat` it into a log, and never commit it; `.env.example` is the tracked template.
 
