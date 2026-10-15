@@ -13,10 +13,17 @@ All notable changes to this project are documented here. The format follows
   and the response's `routingCodeEntries` (kept as raw JSON), `bban` and `bankPostalCode`
   are decoded. Unknown fields are still ignored.
 
+### Changed
+
+- The live walk opens an SCA session (SMS login) right after KYC approval and no longer
+  waits up to three minutes for an EUR account to be listed.
+
 ### Documented
 
-- In the sandbox, EUR accounts are not returned by `/wallets/get/all` or `/wallets/get`
-  (they list only BNB, BTC, ETH, POL and SOL). With the EUR account id from elsewhere
-  (webhook or portal), `/wallets/account/enrich` and `/wallets/get/account/statement`
-  work, while `/wallets/get/account` answers 403 `SCA_REQUIRED` with reason
-  `NO_SESSION`. The live walk now reports the EUR account as unlisted instead of missing.
+- In the sandbox, `/wallets/get/all` and `/wallets/get` leave out the EUR and USDC
+  accounts until the user has an SCA session; they exist from KYC approval on. Without a
+  session, `/wallets/account/enrich` and `/wallets/get/account/statement` work by the EUR
+  account id while `/wallets/get/account` answers 403 `SCA_REQUIRED` with reason
+  `NO_SESSION`. The earlier "EUR appears minutes after approval" note was this filter.
+- `PATCH /simulate/accounts/deposit` credits asynchronously, within seconds; amounts are
+  cents (a portal deposit of "1M" arrived as 1000000 cents, 10,000.00 EUR).
