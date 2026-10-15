@@ -35,3 +35,7 @@ val to_error : t -> Error.t
 val status_of_error : Error.t -> int option
 
 val code_of_error : Error.t -> string option
+
+(** [30070] ([SCA_REQUIRED], reason [NO_SESSION] in the sandbox): the user has no SCA
+    session; open one with {!Sca.login_start} and {!Sca.login_complete} and retry. *)
+val is_sca_session_required : Error.t -> bool

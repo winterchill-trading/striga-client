@@ -100,3 +100,9 @@ let code_of_error e =
   | Some (List [ Atom c ]) -> Some c
   | _ -> None
 ;;
+
+let is_sca_session_required e =
+  match code_of_error e with
+  | Some "30070" -> true
+  | _ -> false
+;;
