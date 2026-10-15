@@ -95,11 +95,18 @@ module Page : sig
   [@@deriving sexp, equal, yojson]
 end
 
+(** One entry of [routingCodeEntries] in an EUR enrichment, kept as raw JSON: the sandbox
+    has only returned an empty list, so the element shape is unknown. *)
+module Routing_code_entry : sig
+  type t = Yojson.Safe.t [@@deriving sexp, equal, yojson]
+end
+
 (** What [/wallets/account/enrich] returns: deposit addresses for crypto accounts, or
     banking details (IBAN, BIC) for EUR accounts. *)
 module Enrichment : sig
   type t =
-    { account_id : string
+    { account_id : string option
+    (** absent from the sandbox's EUR enrichment, which carries [internal_account_id] *)
     ; owner_id : string option
     ; currency : string option
     ; blockchain_deposit_address : string option
@@ -120,6 +127,9 @@ module Enrichment : sig
     ; payment_type : string option
     ; domestic : bool option
     ; pay_in_reference : string option
+    ; routing_code_entries : Routing_code_entry.t list option
+    ; bban : string option
+    ; bank_postal_code : string option
     }
   [@@deriving sexp, equal, yojson]
 end
