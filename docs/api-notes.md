@@ -138,6 +138,22 @@ orders.
   start returns a challenge id.
 - TOTP cannot carry dynamic linking, so EUR/USDC debits to non-trusted beneficiaries need
   `sms` or `passkey`.
+- The session gates EUR and USDC: without one, `/wallets/get` and `/wallets/get/all` leave
+  those accounts out and `/wallets/get/account` on them answers 403 `30070`
+  `SCA_REQUIRED` with `{"reason":"NO_SESSION"}`. An SMS login (sandbox code `123456`)
+  opens the session at once.
+- 2FA reset (sms factor, 2026-10-15): `initiate` answers a reset id, a SumSub access
+  token and a verification link, status `INITIATED`;
+  `POST /simulate/auth/2fa/reset/liveness` moves it to `LIVENESS_PASSED`; `complete` with
+  a new `mobile` answers `{"factor":"sms","ok":true}` and status becomes `COMPLETED`.
+  Completing revoked the SCA session (EUR dropped out of the listing, `30070` again).
+  `enrollmentStatus` comes back `null` for sms.
+- Passkeys are not enabled for this sandbox application: `/user/passkey/register/start`
+  answers 400 `999998` "MultiFactorAuthError: Passkeys not enabled for application";
+  `/user/passkey/list` answers `{"credentials":[],"multiFactorAuth":{"enabled":false,...}}`.
+- Payment Account consent: `/user/payment-account/consent/get` answers
+  `"paymentAccountConsent": null` until recorded; recording returns the stored record with
+  the server's `dateAccepted` when none is sent.
 
 ## Cards
 
@@ -154,6 +170,9 @@ orders.
   server calls `POST /card/confirm-consent` with the challenge id and code and passes the
   returned `cardAuthToken` (24 hours) to the plugin's `render`. `POST /card/revoke-consents`
   invalidates the tokens.
+
+- `POST /card/replace` on an active virtual card (sandbox) issued a new `ACTIVE` card
+  linked to the same account and closed the old one (`CLOSED`).
 
 ## Standing orders
 
