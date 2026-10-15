@@ -838,6 +838,19 @@ module Card_cmd = struct
             ~summary:"close a virtual card for good"
             (let%map.Command card_id = card in
              fun tr -> Card.burn tr ~card_id) )
+      ; ( "replace"
+        , card_cmd
+            ~summary:"replace a card with one of the same settings and link"
+            (let%map.Command card_id = card in
+             fun tr -> Card.replace tr ~card_id) )
+      ; ( "activate"
+        , card_cmd
+            ~summary:"activate a delivered physical card"
+            (let%map.Command card_id = card
+             and activation_code =
+               P.flag "-code" (P.required P.string) ~doc:"DIGITS last 4 card digits"
+             in
+             fun tr -> Card.activate tr ~card_id ~activation_code) )
       ; "limits", limits
       ; "security", security
       ; "set-pin", set_pin
