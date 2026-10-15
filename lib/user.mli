@@ -213,3 +213,22 @@ val payment_account_consent
   :  Transport.t
   -> user_id:string
   -> Payment_account_consent.Record.t Or_error.t Deferred.t
+
+(** Change a verified user's email, for applications with automatic email verification
+    (the new address is not re-verified). *)
+val update_verified_credentials
+  :  Transport.t
+  -> user_id:string
+  -> email:string
+  -> unit Or_error.t Deferred.t
+
+(** Identity-document data extracted during KYC ([idDocType], names, [number],
+    [validUntil], ...). Personal data: never log the result. [user_consent] must reflect
+    the user's real consent to share it (it is audited); [ip] is where they gave it.
+    Enabled per application in production; the sandbox returns dummy data. *)
+val pii
+  :  Transport.t
+  -> user_id:string
+  -> user_consent:bool
+  -> ip:string
+  -> Wire.Raw_json.t Or_error.t Deferred.t

@@ -304,3 +304,24 @@ let payment_account_consent tr ~user_id =
     ~name:"User.Payment_account_consent.Record.t"
     Payment_account_consent.Record.t_of_yojson
 ;;
+
+let update_verified_credentials tr ~user_id ~email =
+  Call.unit
+    tr
+    `PATCH
+    "/user/update-verified-credentials"
+    ~body:(`Assoc [ "userId", `String user_id; "email", `String email ])
+    ()
+;;
+
+let pii tr ~user_id ~user_consent ~ip =
+  Call.json
+    tr
+    `POST
+    "/user/pii"
+    ~body:
+      (`Assoc
+        [ "userId", `String user_id; "userConsent", `Bool user_consent; "ip", `String ip ])
+    ~name:"user PII"
+    Wire.Raw_json.t_of_yojson
+;;
