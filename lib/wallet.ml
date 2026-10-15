@@ -132,8 +132,8 @@ module Page = struct
   [@@deriving sexp, equal, yojson] [@@yojson.allow_extra_fields]
 end
 
-(* Only [] has been seen in the sandbox, so the element shape is unknown: keep each entry as
-   raw JSON instead of guessing a record. *)
+(* Only [] has been seen in the sandbox, so the element shape is unknown: keep each entry
+   as raw JSON instead of guessing a record. *)
 module Routing_code_entry = struct
   type t = Yojson.Safe.t
 
