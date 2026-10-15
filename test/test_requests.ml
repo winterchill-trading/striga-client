@@ -363,6 +363,47 @@ let%expect_test "cards, standing orders, SCA and simulator" =
   return ()
 ;;
 
+let%expect_test "2FA reset and KYC share token" =
+  let tr =
+    transport
+      [ `Fixture "reset-2fa-initiate.json"
+      ; `Fixture "reset-2fa-liveness.json"
+      ; `Fixture "reset-2fa-status.json"
+      ; `Fixture "reset-2fa-complete-sms.json"
+      ; `Text {|{"shareToken":"_act-sbx-share"}|}
+      ; `Fixture "kyc-start.json"
+      ]
+  in
+  let%bind r = Sca.reset_2fa_initiate tr ~user_id:"u1" ~factor:Sms in
+  ok r;
+  let%bind r = Simulator.reset_2fa_liveness tr ~reset_id:"r1" in
+  ok r;
+  let%bind r = Sca.reset_2fa_status tr ~user_id:"u1" ~reset_id:"r1" in
+  ok r;
+  let%bind r =
+    Sca.reset_2fa_complete
+      tr
+      ~user_id:"u1"
+      ~reset_id:"r1"
+      ~mobile:{ country_code = "+372"; number = "56780000" }
+      ()
+  in
+  ok r;
+  let%bind token = Simulator.kyc_share_token tr in
+  let%bind r = User.start_kyc tr ~user_id:"u1" ~share_token:(ok_exn token) () in
+  ok r;
+  [%expect
+    {|
+    POST /user/2fa/reset/initiate {"userId":"u1","factor":"sms"}
+    POST /simulate/auth/2fa/reset/liveness {"resetId":"r1"}
+    POST /user/2fa/reset/status {"userId":"u1","resetId":"r1"}
+    POST /user/2fa/reset/complete {"userId":"u1","resetId":"r1","mobile":{"countryCode":"+372","number":"56780000"}}
+    POST /simulate/kyc/share-token {}
+    POST /user/kyc/start {"userId":"u1","shareToken":"_act-sbx-share"}
+    |}];
+  return ()
+;;
+
 let%expect_test "the simulator refuses a live host" =
   let tr =
     Transport.create
