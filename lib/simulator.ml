@@ -158,3 +158,31 @@ let webhook_ping tr ~payload =
   sandbox_only tr (fun () ->
     Call.unit tr `POST "/simulate/webhook/ping" ~body:(`Assoc [ "payload", payload ]) ())
 ;;
+
+let reset_2fa_liveness tr ~reset_id =
+  sandbox_only tr (fun () ->
+    Call.json
+      tr
+      `POST
+      "/simulate/auth/2fa/reset/liveness"
+      ~body:(`Assoc [ "resetId", `String reset_id ])
+      ~name:"Sca.Reset_2fa.Status.t"
+      Sca.Reset_2fa.Status.t_of_yojson)
+;;
+
+let kyc_share_token tr =
+  sandbox_only tr (fun () ->
+    Call.json
+      tr
+      `POST
+      "/simulate/kyc/share-token"
+      ~body:(`Assoc [])
+      ~name:"share token"
+      (fun json ->
+         match json with
+         | `Assoc fields ->
+           (match List.Assoc.find fields ~equal:String.equal "shareToken" with
+            | Some (`String t) -> t
+            | _ -> failwith "no shareToken")
+         | _ -> failwith "expected an object"))
+;;

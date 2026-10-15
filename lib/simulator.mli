@@ -87,3 +87,14 @@ val payment_accounts_state : Transport.t -> Wire.Raw_json.t Or_error.t Deferred.
 
 (** Send [payload] to the application's webhook URL as a signed [TEST] webhook. *)
 val webhook_ping : Transport.t -> payload:Yojson.Safe.t -> unit Or_error.t Deferred.t
+
+(** Pass the liveness check of a pending 2FA reset ({!Sca.reset_2fa_initiate}); the answer
+    carries the reset's new status, [LIVENESS_PASSED]. *)
+val reset_2fa_liveness
+  :  Transport.t
+  -> reset_id:string
+  -> Sca.Reset_2fa.Status.t Or_error.t Deferred.t
+
+(** A KYC share token, as another provider would issue it, for {!User.start_kyc}'s
+    [?share_token] (reusable KYC). It is a credential, hidden in sexps. *)
+val kyc_share_token : Transport.t -> Wire.Hidden_string.t Or_error.t Deferred.t
