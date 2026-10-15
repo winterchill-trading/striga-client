@@ -191,6 +191,17 @@ val confirm
   -> unit
   -> Transaction.t Or_error.t Deferred.t
 
+(** Confirm a challenge with a passkey: [assertion] is the browser's WebAuthn assertion
+    for the options from {!Sca.start_passkey_approval}, [origin] the page's origin. *)
+val confirm_with_passkey
+  :  Transport.t
+  -> user_id:string
+  -> challenge_id:string
+  -> ip:string
+  -> origin:string
+  -> assertion:Yojson.Safe.t
+  -> Transaction.t Or_error.t Deferred.t
+
 (** Up to 5 resends per challenge. *)
 val resend_otp
   :  Transport.t

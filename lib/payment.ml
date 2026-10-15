@@ -269,6 +269,24 @@ let confirm tr ~user_id ~challenge_id ~code ~ip ?verification_method () =
     Transaction.t_of_yojson
 ;;
 
+let confirm_with_passkey tr ~user_id ~challenge_id ~ip ~origin ~assertion =
+  Call.json
+    tr
+    `POST
+    "/wallets/transaction/confirm"
+    ~body:
+      (`Assoc
+        [ "userId", `String user_id
+        ; "challengeId", `String challenge_id
+        ; "ip", `String ip
+        ; "verificationMethod", `String "passkey"
+        ; "origin", `String origin
+        ; "passkeyAssertion", assertion
+        ])
+    ~name:"Transaction.t"
+    Transaction.t_of_yojson
+;;
+
 let resend_otp tr ~user_id ~challenge_id =
   Call.json
     tr
