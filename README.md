@@ -155,22 +155,24 @@ wrapped.
 
 ## Known gaps
 
-- EUR accounts are not listed: in the sandbox `/wallets/get/all` and `/wallets/get` return
-  only the BNB, BTC, ETH, POL and SOL accounts. A EUR account existed and was `ACTIVE`
-  (enrich by its id worked) while neither endpoint ever listed it, so what earlier runs
-  read as a provisioning delay of minutes was the account being unlisted. Its id has to
-  come from outside these two endpoints. With that id, `/wallets/account/enrich` and
-  `/wallets/get/account/statement` work, while `/wallets/get/account` answers 403
-  `SCA_REQUIRED` with reason `NO_SESSION`. The EUR enrich response has no `accountId`
-  (it carries `internalAccountId`), so `Wallet.Enrichment.account_id` is optional.
+- EUR and USDC accounts are listed only for a user with an SCA session. After KYC
+  approval `/wallets/get/all` and `/wallets/get` return only BNB, BTC, ETH, POL and SOL;
+  the EUR and USDC accounts already exist (their `createdAt` matches the crypto accounts,
+  and enrich by the EUR id works) but stay unlisted, which earlier runs misread as a
+  provisioning delay. After `Sca.login_start`/`login_complete` (SMS, sandbox code
+  `123456`) the same wallet lists EUR and USDC at once. Without a session
+  `/wallets/get/account` on the EUR account answers 403 `SCA_REQUIRED` (reason
+  `NO_SESSION`); with one it answers 200. The live walk opens the session right after
+  KYC approval. One EUR enrich response seen without a session had no `accountId`, so
+  `Wallet.Enrichment.account_id` is optional; with a session it carried one.
 - Moving crypto needs a balance and the sandbox cannot fund crypto accounts (no faucet,
   Lightning invoices are regtest), so on-chain withdrawals, crypto intraledger transfers
   and Lightning payouts are exercised only up to Striga's balance check
   (`31090`) or invoice check ("Invalid Lightning Invoice" when paying another sandbox
   user's invoice).
 - Intraledger between two wallets of the same user is refused (`30030` Ruleset
-  violation); between two users it needs EUR on both, which needs the unlisted EUR
-  account ids (above).
+  violation); between two users it needs EUR on both (listed only with an SCA session,
+  above).
 - Standing orders: only the creation challenge is verified; non-EUR pairs are refused
   (`64005`), and confirmation needs a funded flow.
 - Card PAN display needs Striga's browser plugin (it sends the consent OTP); the server
