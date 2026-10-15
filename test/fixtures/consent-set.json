@@ -1,0 +1,10 @@
+{
+  "userId": "00000000-0000-4000-8000-000000000001",
+  "paymentAccountConsent": {
+    "accepted": true,
+    "dateAccepted": "2026-10-15T05:06:31.097Z",
+    "ip": "185.46.212.10",
+    "termsUri": "https://example.com/terms",
+    "termsVersion": "2026-08-v1"
+  }
+}

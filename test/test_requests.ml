@@ -82,6 +82,30 @@ let%expect_test "users" =
   return ()
 ;;
 
+let%expect_test "Payment Account consent" =
+  let tr = transport [ `Fixture "consent-set.json"; `Fixture "consent-none.json" ] in
+  let%bind r =
+    User.set_payment_account_consent
+      tr
+      ~user_id:"u1"
+      ~accepted:true
+      ~terms_version:"v1"
+      ~terms_uri:"https://example.com/terms"
+      ~date_accepted:"2026-09-11T12:00:00.000Z"
+      ~ip:"198.51.100.9"
+      ()
+  in
+  ok r;
+  let%bind r = User.payment_account_consent tr ~user_id:"u1" in
+  ok r;
+  [%expect
+    {|
+    POST /user/payment-account/consent {"userId":"u1","accepted":true,"termsVersion":"v1","termsUri":"https://example.com/terms","dateAccepted":"2026-09-11T12:00:00.000Z","ip":"198.51.100.9"}
+    POST /user/payment-account/consent/get {"userId":"u1"}
+    |}];
+  return ()
+;;
+
 let%expect_test "wallets" =
   let tr =
     transport

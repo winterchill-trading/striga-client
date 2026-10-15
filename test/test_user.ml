@@ -110,3 +110,22 @@ let%expect_test "unknown KYC status values survive" =
   print_s [%sexp (k.status : User.Kyc_status.t option)];
   [%expect {| ((Other FROZEN)) |}]
 ;;
+
+let%expect_test "Payment Account consent, recorded and never recorded (sandbox)" =
+  List.iter [ "consent-set.json"; "consent-none.json" ] ~f:(fun f ->
+    let r =
+      Fixture.roundtrip
+        f
+        User.Payment_account_consent.Record.t_of_yojson
+        User.Payment_account_consent.Record.yojson_of_t
+        User.Payment_account_consent.Record.equal
+    in
+    print_s [%sexp (r.payment_account_consent : User.Payment_account_consent.t option)]);
+  [%expect
+    {|
+    (((accepted true) (date_accepted (2026-10-15T05:06:31.097Z))
+      (ip (185.46.212.10)) (terms_uri (https://example.com/terms))
+      (terms_version (2026-08-v1))))
+    ()
+    |}]
+;;
