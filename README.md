@@ -155,12 +155,11 @@ wrapped.
 
 ## Known gaps
 
-- The EUR and USDC accounts appear seconds to minutes after the simulated KYC approval
-  (the banking record is provisioned in the background); the live walk waits up to three
-  minutes and records a gap if they never come.
 - EUR accounts are not listed: in the sandbox `/wallets/get/all` and `/wallets/get` return
-  only the BNB, BTC, ETH, POL and SOL accounts. The EUR account id has to come from
-  elsewhere (a webhook or the portal). With that id, `/wallets/account/enrich` and
+  only the BNB, BTC, ETH, POL and SOL accounts. A EUR account existed and was `ACTIVE`
+  (enrich by its id worked) while neither endpoint ever listed it, so what earlier runs
+  read as a provisioning delay of minutes was the account being unlisted. Its id has to
+  come from outside these two endpoints. With that id, `/wallets/account/enrich` and
   `/wallets/get/account/statement` work, while `/wallets/get/account` answers 403
   `SCA_REQUIRED` with reason `NO_SESSION`. The EUR enrich response has no `accountId`
   (it carries `internalAccountId`), so `Wallet.Enrichment.account_id` is optional.
@@ -170,8 +169,8 @@ wrapped.
   (`31090`) or invoice check ("Invalid Lightning Invoice" when paying another sandbox
   user's invoice).
 - Intraledger between two wallets of the same user is refused (`30030` Ruleset
-  violation); between two users it needs EUR on both, which depends on the provisioning
-  delay above.
+  violation); between two users it needs EUR on both, which needs the unlisted EUR
+  account ids (above).
 - Standing orders: only the creation challenge is verified; non-EUR pairs are refused
   (`64005`), and confirmation needs a funded flow.
 - Card PAN display needs Striga's browser plugin (it sends the consent OTP); the server
