@@ -1153,6 +1153,16 @@ module Sca_cmd = struct
       ; "reset-start", reset_start
       ; "reset-status", reset_status
       ; "reset-complete", reset_complete
+      ; ( "passkey-register-start"
+        , cmd
+            ~summary:"WebAuthn creation options for a new passkey (for the browser)"
+            (let%map.Command user_id = user
+             and display_name =
+               P.flag "-name" (P.optional P.string) ~doc:"NAME display name"
+             in
+             fun tr -> Sca.register_passkey_start tr ~user_id ?display_name ())
+            ~to_json:Sca.Login_challenge.yojson_of_t
+            ~to_sexp:Sca.Login_challenge.sexp_of_t )
       ; ( "passkeys"
         , raw_cmd
             ~summary:"list enrolled passkeys"
