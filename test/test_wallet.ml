@@ -186,3 +186,28 @@ let%expect_test "EUR enrichment and statement in the sandbox" =
     ((type_ (Sepa_payin_completed)) (credit (10000)) (debit ()) (after (10000)))
     |}]
 ;;
+
+let%expect_test "EUR enrichment as the sandbox returns it (no accountId)" =
+  let e =
+    Fixture.roundtrip
+      "enrich-eur-sandbox.json"
+      Wallet.Enrichment.t_of_yojson
+      Wallet.Enrichment.yojson_of_t
+      Wallet.Enrichment.equal
+  in
+  print_s [%sexp (e : Wallet.Enrichment.t)];
+  [%expect
+    {|
+    ((account_id ()) (owner_id ()) (currency (EUR))
+     (blockchain_deposit_address ()) (blockchain_network ())
+     (blockchain_networks ()) (multi_chain_support ()) (deposit_addresses ())
+     (status (ACTIVE)) (internal_account_id (EUR03076388531233))
+     (bank_country (GB))
+     (bank_address ("The Bower, 207-211 Old Street, London, England, EC1V 9NR"))
+     (iban (GB81SEOU19870010482976)) (bic (SEOUGB21))
+     (account_number (010482976)) (bank_name ("Simulator Bank"))
+     (bank_account_holder_name ("SANDBOX ADA")) (provider (SIMULATOR))
+     (payment_type ()) (domestic (false)) (pay_in_reference ())
+     (routing_code_entries (())) (bban ()) (bank_postal_code ("SE1 9PA")))
+    |}]
+;;
