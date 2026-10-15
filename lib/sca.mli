@@ -126,3 +126,75 @@ val confirm_untrust
   -> Wire.Raw_json.t Or_error.t Deferred.t
 
 val list_passkeys : Transport.t -> user_id:string -> Wire.Raw_json.t Or_error.t Deferred.t
+
+(** Second-factor recovery: the user proves who they are with a liveness check (the
+    sandbox passes it with {!Simulator.reset_2fa_liveness}), then gets a fresh factor.
+    Completing revokes the user's SCA sessions. *)
+module Reset_2fa : sig
+  module Initiated : sig
+    type t =
+      { reset_id : string
+      ; sumsub_access_token : Wire.Hidden_string.t option
+      (** for the embedded verification SDK *)
+      ; verification_link : Wire.Hidden_string.t option (** hosted verification page *)
+      ; expires_at : string option (** the reset must complete within 30 minutes *)
+      }
+    [@@deriving sexp_of, equal, yojson]
+  end
+
+  module Status : sig
+    type t =
+      { reset_id : string option
+      ; factor : Common.Verification_method.t option
+      ; status : string option
+      (** [INITIATED], [PENDING_REVIEW], [LIVENESS_PASSED], [COMPLETED], [REJECTED],
+          [EXPIRED] *)
+      ; enrollment_status : string option
+      (** [PENDING] or [COMPLETED] for totp/passkey resets; absent for sms *)
+      ; expires_at : string option
+      ; completed_at : string option
+      }
+    [@@deriving sexp, equal, yojson]
+  end
+
+  (** By factor: [sms] answers [ok]; [totp] a fresh secret to finish with
+      {!complete_totp}; [passkey] WebAuthn creation options to finish with
+      {!register_passkey_complete}. *)
+  module Completed : sig
+    type t =
+      { factor : Common.Verification_method.t option
+      ; ok : bool option
+      ; secret : Wire.Hidden_string.t option
+      ; secret_base32_encoded : Wire.Hidden_string.t option
+      ; totp_uri : Wire.Hidden_string.t option
+      ; options : Wire.Raw_json.t option
+      ; allowed_origins : string list option
+      ; relying_party_id : string option
+      }
+    [@@deriving sexp_of, equal, yojson]
+  end
+end
+
+(** Start a reset of an enrolled [factor]. At most 5 per user per 24 hours. Calling again
+    while pending re-issues verification credentials for the same reset. *)
+val reset_2fa_initiate
+  :  Transport.t
+  -> user_id:string
+  -> factor:Common.Verification_method.t
+  -> Reset_2fa.Initiated.t Or_error.t Deferred.t
+
+val reset_2fa_status
+  :  Transport.t
+  -> user_id:string
+  -> reset_id:string
+  -> Reset_2fa.Status.t Or_error.t Deferred.t
+
+(** Call once the status is [LIVENESS_PASSED]. [mobile] is required for an [sms] reset
+    (the new number). *)
+val reset_2fa_complete
+  :  Transport.t
+  -> user_id:string
+  -> reset_id:string
+  -> ?mobile:Common.Mobile.t
+  -> unit
+  -> Reset_2fa.Completed.t Or_error.t Deferred.t
