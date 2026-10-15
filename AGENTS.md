@@ -69,9 +69,9 @@ Do not poll in a loop.
 
 ## Pitfalls
 
-- The sandbox's `/wallets/get` and `/wallets/get/all` never list the EUR account, although it exists and
-  is `ACTIVE` (enrich by id works). It is not a provisioning delay: waiting for it to appear in a wallet
-  listing does not help. The live walk records a gap when it has no EUR account id.
+- The sandbox's `/wallets/get` and `/wallets/get/all` leave out the EUR and USDC accounts until the user
+  has an SCA session (`Sca.login_start`/`login_complete`); they exist from KYC approval on. It is not a
+  provisioning delay, so do not add waits for it: open the session first, as the live walk does.
 - Some payouts cannot be exercised in the sandbox (no crypto funding, regtest invoices). The README's
   known gaps list which paths stop at a provider balance or invoice check; a test must not claim more.
 - Each live run creates two sandbox users. Run it deliberately, not in a loop.
