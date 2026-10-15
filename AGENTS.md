@@ -15,7 +15,7 @@ authentication and webhook verification. It talks to the sandbox unless it is cr
 | `test/` | Offline tests: signatures, TOTP vectors, transport, every fixture decoded and round-tripped |
 | `test/fixtures/` | Recorded JSON responses and webhook payloads used by the offline tests |
 | `test/live/` | The live sandbox walk, run only with credentials and `STRIGA_LIVE_TESTS=1` |
-| `docs/` | `api-notes.md`: API behaviour the code depends on, as seen in the sandbox |
+| `docs/` | `api-notes.md`: API behaviour the code depends on, as seen in the sandbox; `api-coverage.md`: every public endpoint, its evidence and whether it is wrapped |
 | `.github/` | `ci.yml` |
 | `README.md` | Quick start, environment, modules, endpoint coverage, tests, known gaps |
 
@@ -72,6 +72,12 @@ Do not poll in a loop.
 - The sandbox's `/wallets/get` and `/wallets/get/all` leave out the EUR and USDC accounts until the user
   has an SCA session (`Sca.login_start`/`login_complete`); they exist from KYC approval on. It is not a
   provisioning delay, so do not add waits for it: open the session first, as the live walk does.
+- `Webhook.Event.t` is matched exhaustively by the provider adapter. Add new delivery kinds to
+  `Webhook.Notice.t` (or another separate type), not to `Event.t`, unless the adapter is changed in
+  the same step. The same holds for `Transaction.Tx_type.t`: unknown values already decode as `Other`.
+- Passkeys are not enabled for the sandbox application (`999998` "Passkeys not enabled for
+  application"), so passkey calls are pinned offline only.
+- When a new endpoint is wrapped or verified, update its row in `docs/api-coverage.md`.
 - Some payouts cannot be exercised in the sandbox (no crypto funding, regtest invoices). The README's
   known gaps list which paths stop at a provider balance or invoice check; a test must not claim more.
 - Each live run creates two sandbox users. Run it deliberately, not in a loop.
@@ -84,7 +90,8 @@ Do not poll in a loop.
 
 ## Where to read more
 
-- `README.md` (environment, modules, endpoint coverage, tests, known gaps), `docs/api-notes.md`.
+- `README.md` (environment, modules, endpoint coverage, tests, known gaps), `docs/api-notes.md`,
+  `docs/api-coverage.md`.
 - `../striga-provider/docs/mapping.md`, to see how the adapter uses this client.
 - `../specs/repos/striga-client.md` for the repository summary.
 - `../oxcaml-claude-skills/AGENTS.md` (workspace guide) and the skill
