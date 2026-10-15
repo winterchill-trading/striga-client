@@ -222,7 +222,7 @@ let resend_sms tr ~user_id =
   Call.unit tr `POST "/user/resend-sms" ~body:(`Assoc [ "userId", `String user_id ]) ()
 ;;
 
-let start_kyc tr ~user_id ?tier () =
+let start_kyc tr ~user_id ?tier ?share_token () =
   Call.json
     tr
     `POST
@@ -231,6 +231,7 @@ let start_kyc tr ~user_id ?tier () =
       (Wire.obj
          [ "userId", Some (`String user_id)
          ; "tier", Option.map tier ~f:(fun i -> `Int i)
+         ; "shareToken", Option.map share_token ~f:(fun s -> `String s)
          ])
     ~name:"User.Kyc_start.t"
     Kyc_start.t_of_yojson

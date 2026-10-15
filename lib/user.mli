@@ -158,11 +158,14 @@ val verify_mobile
 val resend_email : Transport.t -> user_id:string -> unit Or_error.t Deferred.t
 val resend_sms : Transport.t -> user_id:string -> unit Or_error.t Deferred.t
 
-(** Needs a verified email and mobile and no [missing_fields]. [tier] is 1 or 2. *)
+(** Needs a verified email and mobile and no [missing_fields]. [tier] is 1 or 2.
+    [share_token] reuses a KYC done with another SumSub client (the sandbox issues one
+    with {!Simulator.kyc_share_token}). *)
 val start_kyc
   :  Transport.t
   -> user_id:string
   -> ?tier:int
+  -> ?share_token:string
   -> unit
   -> Kyc_start.t Or_error.t Deferred.t
 
