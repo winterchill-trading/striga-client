@@ -99,7 +99,7 @@ pinned by the request-shape test; "wrapped" means implemented from the reference
 | `POST /wallets/account/get-transactions-by-id`        | `Wallet.transactions_by_id`           | fixture  |
 | `POST /trade/rates`                                   | `Exchange.rates`                      | live     |
 | `POST /wallets/swap` + confirm (EUR to USDC)          | `Exchange.swap`                       | live     |
-| `POST /wallets/send/intra/initiate`                   | `Payment.intraledger`                 | live (see gaps) |
+| `POST /wallets/send/intra/initiate`                   | `Payment.intraledger`                 | live (EUR)      |
 | `POST /wallets/send/inter/initiate`                   | `Payment.interledger`                 | wrapped  |
 | `POST /wallets/send/initiate/bank` + confirm           | `Payment.sepa`                        | live     |
 | `POST /wallets/validate-sepa-beneficiary`             | `Payment.validate_sepa_beneficiary`   | live     |
@@ -171,8 +171,8 @@ wrapped.
   (`31090`) or invoice check ("Invalid Lightning Invoice" when paying another sandbox
   user's invoice).
 - Intraledger between two wallets of the same user is refused (`30030` Ruleset
-  violation); between two users it needs EUR on both (listed only with an SCA session,
-  above).
+  violation). EUR intraledger between two users (initiate and OTP confirm) passed in the
+  live walk of 2026-10-15 once both users had an SCA session.
 - Standing orders: only the creation challenge is verified; non-EUR pairs are refused
   (`64005`), and confirmation needs a funded flow.
 - Card PAN display needs Striga's browser plugin (it sends the consent OTP); the server
