@@ -87,6 +87,7 @@ let sensitive_fields =
   ; "verificationId"
   ; "code"
   ; "shareToken"
+  ; "sumsubAccessToken" (* 2FA reset identity check *)
   ]
 ;;
 
