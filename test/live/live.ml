@@ -121,20 +121,6 @@ let onboard tr ~tag =
   user_id, wallet
 ;;
 
-let with_eur tr ~user_id (w : Wallet.t) =
-  if Option.is_some (Wallet.account w ~currency:"EUR")
-  then return w
-  else (
-    match%map
-      (* Seen taking from under a minute to several minutes. *)
-      poll ~tries:90 ~every:(Time_ns.Span.of_sec 2.) (fun () ->
-        Wallet.get tr ~user_id ~wallet_id:w.wallet_id
-        >>|? fun w -> Option.some_if (Option.is_some (Wallet.account w ~currency:"EUR")) w)
-    with
-    | Ok w -> w
-    | Error _ -> w)
-;;
-
 let account_id (w : Wallet.t) currency =
   Option.map (Wallet.account w ~currency) ~f:(fun a -> a.Wallet.Account.account_id)
 ;;
@@ -258,10 +244,8 @@ let walk tr =
        let%bind (_ : Wallet.t option) =
          step "create a second wallet" (fun () -> Wallet.create tr ~user_id:a)
        in
-       (* KYC approval provisions crypto accounts first; the EUR and USDC accounts
-          (banking record) arrive some seconds later. *)
-       let%bind wa = with_eur tr ~user_id:a wa in
-       let%bind wb = with_eur tr ~user_id:b wb in
+       (* No wait for EUR: the sandbox never lists the EUR account in /wallets/get, so
+          polling the wallet (the old three-minute wait) only delayed the gap. *)
        let%bind () = eur_walk tr ~a ~wa ~b ~wb in
        let btc_a = Option.value_exn (account_id wa "BTC") in
        let btc_b = Option.value_exn (account_id wb "BTC") in
