@@ -195,6 +195,18 @@ val burn : Transport.t -> card_id:string -> t Or_error.t Deferred.t
 
 val report_missing : Transport.t -> card_id:string -> t Or_error.t Deferred.t
 
+(** A new card with the old one's name, 3DS password, delivery method and address, linked
+    to the same account. Physical or virtual. *)
+val replace : Transport.t -> card_id:string -> t Or_error.t Deferred.t
+
+(** Activate a delivered physical card with the last 4 digits printed on it. In the
+    sandbox, {!Simulator.card_status} does this instead. *)
+val activate
+  :  Transport.t
+  -> card_id:string
+  -> activation_code:string
+  -> t Or_error.t Deferred.t
+
 (** Set some of the limits, e.g. [["dailyPurchase", 500]] (EUR). *)
 val update_limits
   :  Transport.t

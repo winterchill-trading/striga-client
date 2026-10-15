@@ -329,6 +329,20 @@ let report_missing tr ~card_id =
     card
 ;;
 
+let replace tr ~card_id =
+  Call.json tr `POST "/card/replace" ~body:(card_body card_id []) ~name:"Card.t" card
+;;
+
+let activate tr ~card_id ~activation_code =
+  Call.json
+    tr
+    `POST
+    "/card/activate"
+    ~body:(card_body card_id [ "activationCode", Some (`String activation_code) ])
+    ~name:"Card.t"
+    card
+;;
+
 let update_limits tr ~card_id ~limits =
   Call.json
     tr
