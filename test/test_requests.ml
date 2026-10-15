@@ -404,6 +404,66 @@ let%expect_test "2FA reset and KYC share token" =
   return ()
 ;;
 
+let%expect_test "passkeys" =
+  let tr =
+    transport
+      [ `Text
+          {|{"options":{"challenge":"x"},"allowedOrigins":["https://app.example"],"relyingPartyId":"app.example"}|}
+      ; `Text {|{"credential":{"id":"p1"}}|}
+      ; `Text
+          {|{"challengeId":"c1","dateExpires":"2026-10-15T06:00:00.000Z","verificationMethod":"sms"}|}
+      ; `Text {|{"deleted":true,"credentialId":"p1","challengeId":"c1"}|}
+      ; `Text {|{"challengeId":"c2","verificationMethod":"passkey","options":{}}|}
+      ; `Fixture "docs-confirm-inter.json"
+      ]
+  in
+  let%bind r = Sca.register_passkey_start tr ~user_id:"u1" ~display_name:"Phone" () in
+  ok r;
+  let%bind r =
+    Sca.register_passkey_complete
+      tr
+      ~user_id:"u1"
+      ~origin:"https://app.example"
+      ~credential:(`Assoc [ "id", `String "p1" ])
+  in
+  ok r;
+  let%bind r = Sca.delete_passkey tr ~user_id:"u1" ~credential_id:"p1" in
+  ok r;
+  let%bind r =
+    Sca.confirm_passkey_deletion
+      tr
+      ~user_id:"u1"
+      ~challenge_id:"c1"
+      ~verification_method:Sms
+      ~ip:"192.0.2.1"
+      ~code:"123456"
+      ()
+  in
+  ok r;
+  let%bind r = Sca.start_passkey_approval tr ~user_id:"u1" ~challenge_id:"c2" in
+  ok r;
+  let%bind r =
+    Payment.confirm_with_passkey
+      tr
+      ~user_id:"u1"
+      ~challenge_id:"c2"
+      ~ip:"192.0.2.1"
+      ~origin:"https://app.example"
+      ~assertion:(`Assoc [ "id", `String "p1" ])
+  in
+  ok r;
+  [%expect
+    {|
+    POST /user/passkey/register/start {"userId":"u1","displayName":"Phone"}
+    POST /user/passkey/register/complete {"userId":"u1","origin":"https://app.example","credential":{"id":"p1"}}
+    POST /user/passkey/delete {"userId":"u1","credentialId":"p1"}
+    POST /user/passkey/delete/confirm {"userId":"u1","challengeId":"c1","verificationMethod":"sms","ip":"192.0.2.1","code":"123456"}
+    POST /wallets/passkey/approval/start {"userId":"u1","challengeId":"c2"}
+    POST /wallets/transaction/confirm {"userId":"u1","challengeId":"c2","ip":"192.0.2.1","verificationMethod":"passkey","origin":"https://app.example","passkeyAssertion":{"id":"p1"}}
+    |}];
+  return ()
+;;
+
 let%expect_test "the simulator refuses a live host" =
   let tr =
     Transport.create
