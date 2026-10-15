@@ -65,23 +65,25 @@ IBANs and card numbers in its JSON output unless `-reveal` is given.
 | `Transport`      | signing, retries on 429/5xx for reads, throttling, request ids, redaction     |
 | `Tls`            | certificate host-name check that cohttp-async's default config skips           |
 | `Redact`         | secrets, IBANs (country + last 4), card numbers (last 4), one-time tokens      |
-| `User`           | create, update, get, verify email/mobile, resend codes, start KYC, KYC status   |
+| `User`           | create, update, get, verify email/mobile, resend codes, start KYC, KYC status, Payment Account consent, verified-email change, PII read |
 | `Wallet`         | wallets, accounts, enrichment (IBAN, deposit addresses), statements            |
 | `Transaction`    | ledger entries with an open `Tx_type`                                          |
 | `Exchange`       | rates, swaps                                                                   |
 | `Payment`        | intraledger, interledger, SEPA, on-chain (with fee estimate), Lightning in/out, OTP confirm and resend, whitelisted addresses and IBANs |
-| `Card`           | virtual cards, freeze, limits, settings, 3-D Secure, PIN, statements, PAN consent |
+| `Card`           | virtual cards, freeze, limits, settings, 3-D Secure, PIN, statements, PAN consent, replace, physical activation |
 | `Standing_order` | create, confirm, cancel, list, get, resume                                     |
-| `Sca`            | TOTP enrollment, unified login, security events, trusted beneficiaries         |
+| `Sca`            | TOTP enrollment, unified login, security events, trusted beneficiaries, passkeys, 2FA reset |
 | `Totp`           | RFC 6238 codes (acts as the user's authenticator in tests and dev tools)       |
-| `Simulator`      | sandbox KYC/KYB decisions, EUR deposits, SEPA outcomes, card status and payments, webhook ping |
-| `Webhook`        | signature check and decoding by channel (`/kyc`, `/tx`, `/card/watch`, `/ping`) |
+| `Simulator`      | sandbox KYC/KYB decisions, KYC share token, 2FA reset liveness, EUR deposits, SEPA outcomes, card status and payments, webhook ping |
+| `Webhook`        | signature check and decoding by channel (`/kyc`, `/tx`, `/card/watch`, `/ping`), typed notices (`Webhook.notice`) |
 
 ## Endpoint coverage
 
 "Live" means exercised against the sandbox (by `test/live` or the CLI) with the result
 shown; "fixture" means decoded from a recorded or documented body in `test/fixtures` and
 pinned by the request-shape test; "wrapped" means implemented from the reference only.
+`docs/api-coverage.md` lists every endpoint found in public sources, with its evidence
+and status, plus the webhook catalogue and error codes.
 
 | Endpoint                                              | Function                              | Verified |
 | ----------------------------------------------------- | ------------------------------------- | -------- |
@@ -131,11 +133,18 @@ pinned by the request-shape test; "wrapped" means implemented from the reference
 | `POST /simulate/payment-accounts/state`               | `Simulator.payment_accounts_state`    | live     |
 | `POST /simulate/webhook/ping`                         | `Simulator.webhook_ping`              | live     |
 | `PATCH /simulate/business/kyb`, `/simulate/card/status` | `Simulator.kyb`, `card_status`      | wrapped  |
-| Webhooks (`/kyc`, `/tx`, `/card/watch`, `/ping`)       | `Webhook.verify_and_parse`            | fixture (documented payloads) |
+| `POST /user/payment-account/consent`, `/consent/get`   | `User.set_payment_account_consent`, `payment_account_consent` | live |
+| `POST /user/2fa/reset/initiate`, `/status`, `/complete` | `Sca.reset_2fa_*`                    | live (sms) |
+| `POST /simulate/auth/2fa/reset/liveness`, `/simulate/kyc/share-token` | `Simulator.reset_2fa_liveness`, `kyc_share_token` | live |
+| `POST /card/replace`                                  | `Card.replace`                        | live     |
+| `POST /card/activate`                                 | `Card.activate`                       | wrapped  |
+| `/user/passkey/register/*`, `/user/passkey/delete*`, `/wallets/passkey/approval/start` | `Sca.*_passkey*`, `Payment.confirm_with_passkey` | wrapped (passkeys are off for the sandbox application) |
+| `PATCH /user/update-verified-credentials`, `POST /user/pii` | `User.update_verified_credentials`, `User.pii` | wrapped |
+| Webhooks (`/kyc`, `/kyb`, `/tx`, `/card/watch`, `/ping`) | `Webhook.verify_and_parse`, `Webhook.notice` | fixture (documented payloads) |
 
-Business (KYB) onboarding, business wallets, corporate accounts, travel rule, passkeys,
-2FA reset, card tokenization (Apple/Google Pay) and physical card activation are not
-wrapped.
+Business (KYB) onboarding, business wallets, corporate accounts, travel rule, card
+tokenization (Apple/Google Pay) and anonymous cards are not wrapped;
+`/standing-orders/update-fees` is not wrapped because its body is not published.
 
 ## Tests
 
