@@ -132,22 +132,6 @@ module Page = struct
   [@@deriving sexp, equal, yojson] [@@yojson.allow_extra_fields]
 end
 
-(* Only [] has been seen in the sandbox, so the element shape is unknown: keep each entry
-   as raw JSON instead of guessing a record. *)
-module Routing_code_entry = struct
-  type t = Yojson.Safe.t
-
-  let t_of_yojson = Fn.id
-  let yojson_of_t = Fn.id
-  let equal = Yojson.Safe.equal
-  let sexp_of_t t = Sexp.Atom (Yojson.Safe.to_string t)
-
-  let t_of_sexp = function
-    | Sexp.Atom s -> Yojson.Safe.from_string s
-    | sexp -> of_sexp_error "Routing_code_entry: expected a JSON string atom" sexp
-  ;;
-end
-
 module Enrichment = struct
   type t =
     { (* The EUR enrichment in the sandbox has no [accountId], only [internalAccountId]. *)
@@ -189,7 +173,7 @@ module Enrichment = struct
     ; domestic : bool option [@default None] [@yojson_drop_if Option.is_none]
     ; pay_in_reference : string option
          [@key "payInReference"] [@default None] [@yojson_drop_if Option.is_none]
-    ; routing_code_entries : Routing_code_entry.t list option
+    ; routing_code_entries : Wire.Raw_json.t list option
          [@key "routingCodeEntries"] [@default None] [@yojson_drop_if Option.is_none]
     ; bban : string option [@default None] [@yojson_drop_if Option.is_none]
     ; bank_postal_code : string option
