@@ -227,6 +227,31 @@ module User_cmd = struct
       ~to_sexp:User.Kyc.sexp_of_t
   ;;
 
+  let consent =
+    cmd
+      ~summary:"record or withdraw the Payment Account consent, or read it with -get"
+      (let%map_open.Command user_id = user
+       and get = flag "-get" no_arg ~doc:" read the stored consent instead"
+       and withdraw = flag "-withdraw" no_arg ~doc:" record accepted=false"
+       and terms_version = flag "-terms-version" (optional string) ~doc:"V terms version"
+       and terms_uri = flag "-terms-uri" (optional string) ~doc:"URI terms document"
+       and ip = flag "-ip" (optional string) ~doc:"IP end user's IP" in
+       fun tr ->
+         if get
+         then User.payment_account_consent tr ~user_id
+         else
+           User.set_payment_account_consent
+             tr
+             ~user_id
+             ~accepted:(not withdraw)
+             ?terms_version
+             ?terms_uri
+             ?ip
+             ())
+      ~to_json:User.Payment_account_consent.Record.yojson_of_t
+      ~to_sexp:User.Payment_account_consent.Record.sexp_of_t
+  ;;
+
   let command =
     Command.group
       ~summary:"consumers and KYC"
@@ -238,6 +263,7 @@ module User_cmd = struct
       ; "resend-sms", resend "sms"
       ; "start-kyc", start_kyc
       ; "kyc-status", kyc_status
+      ; "consent", consent
       ]
   ;;
 end
