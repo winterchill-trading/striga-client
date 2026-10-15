@@ -89,8 +89,10 @@ orders.
 - `POST /user/kyc/start` returns a SumSub token and a hosted `verificationLink`; both are
   short-lived credentials for the user and are masked by the client's output.
 - `PATCH /simulate/user/kyc {"status":"APPROVED","tier":1}` approves at once. Crypto
-  accounts (BTC, ETH, BNB, POL, SOL) exist a few seconds later; **the EUR and USDC accounts
-  appear later still** (they need the banking record). Wait for them before using EUR.
+  accounts (BTC, ETH, BNB, POL, SOL) are listed a few seconds later. **The EUR account is
+  never listed** by `/wallets/get` or `/wallets/get/all`, although it exists and is
+  `ACTIVE` (enrich by its id works); what looked like a provisioning delay was the
+  account being unlisted.
 - Tiers 0 to 3 each report limits in EUR cents (`inboundLimitAllowed.all = 2500000` for
   tier 1).
 
@@ -164,6 +166,12 @@ wraps KYC/KYB decisions, EUR deposits, SEPA outcomes, card status, card authoriz
 reading Payment Accounts settings and webhook pings, and refuses to call them against a
 non-sandbox host. `PATCH /simulate/payment-accounts` flips an application-wide setting and
 is deliberately not wrapped.
+
+- The EUR deposit simulator is `PATCH /simulate/accounts/deposit`; it answers at once and
+  the credit lands on the account asynchronously, within seconds. Poll the statement or
+  the balance rather than reading it right after the call.
+- Amounts are EUR cents everywhere: a portal deposit entered as "1M" arrived as
+  `1000000` cents, that is 10,000.00 EUR.
 
 ## Webhooks
 
