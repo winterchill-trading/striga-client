@@ -89,10 +89,12 @@ orders.
 - `POST /user/kyc/start` returns a SumSub token and a hosted `verificationLink`; both are
   short-lived credentials for the user and are masked by the client's output.
 - `PATCH /simulate/user/kyc {"status":"APPROVED","tier":1}` approves at once. Crypto
-  accounts (BTC, ETH, BNB, POL, SOL) are listed a few seconds later. **The EUR account is
-  never listed** by `/wallets/get` or `/wallets/get/all`, although it exists and is
-  `ACTIVE` (enrich by its id works); what looked like a provisioning delay was the
-  account being unlisted.
+  accounts (BTC, ETH, BNB, POL, SOL) are listed a few seconds later. **The EUR and USDC
+  accounts are listed only once the user has an SCA session**: they are created with the
+  crypto accounts (same `createdAt`) and are `ACTIVE`, but `/wallets/get` and
+  `/wallets/get/all` leave them out until `login/start` + `login/complete` (SMS with the
+  sandbox code works), after which they appear at once. What looked like a provisioning
+  delay was this filter.
 - Tiers 0 to 3 each report limits in EUR cents (`inboundLimitAllowed.all = 2500000` for
   tier 1).
 
@@ -105,10 +107,11 @@ orders.
   4.6 ETH; the client keeps amounts as strings.
 - `POST /wallets/account/enrich` returns deposit addresses (crypto) or IBAN details (EUR);
   repeating it returns the same details. Sandbox BTC is testnet3 (`tb1...`), ETH Sepolia.
-- EUR accounts are not returned by `/wallets/get/all` or `/wallets/get` in the sandbox
-  (they list BNB, BTC, ETH, POL and SOL only). Given the EUR account id from elsewhere
-  (webhook, portal), enrich and statement work; `/wallets/get/account` answers 403
-  `SCA_REQUIRED`, reason `NO_SESSION`. The EUR enrich body has no `accountId`.
+- Without an SCA session, `/wallets/get/all` and `/wallets/get` list BNB, BTC, ETH, POL
+  and SOL only; given the EUR account id, enrich and statement still work and
+  `/wallets/get/account` answers 403 `SCA_REQUIRED`, reason `NO_SESSION`. With a session
+  EUR and USDC are listed and `/wallets/get/account` answers 200. One EUR enrich body
+  seen without a session had no `accountId`; with a session it had one.
 - `blockchainNetwork` is an object in account responses and a plain string in statements.
 
 ## Money movement
