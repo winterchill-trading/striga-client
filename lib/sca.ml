@@ -283,3 +283,74 @@ let reset_2fa_complete tr ~user_id ~reset_id ?mobile () =
     ~name:"Sca.Reset_2fa.Completed.t"
     Reset_2fa.Completed.t_of_yojson
 ;;
+
+let register_passkey_start tr ~user_id ?display_name () =
+  Call.json
+    tr
+    `POST
+    "/user/passkey/register/start"
+    ~body:(Wire.obj [ "userId", s (Some user_id); "displayName", s display_name ])
+    ~name:"Sca.Login_challenge.t"
+    Login_challenge.t_of_yojson
+;;
+
+let register_passkey_complete tr ~user_id ~origin ~credential =
+  Call.json
+    tr
+    `POST
+    "/user/passkey/register/complete"
+    ~body:
+      (`Assoc
+        [ "userId", `String user_id; "origin", `String origin; "credential", credential ])
+    ~name:"passkey registration"
+    raw
+;;
+
+let delete_passkey tr ~user_id ~credential_id =
+  Call.json
+    tr
+    `POST
+    "/user/passkey/delete"
+    ~body:(`Assoc [ "userId", `String user_id; "credentialId", `String credential_id ])
+    ~name:"Sca.Login_challenge.t"
+    Login_challenge.t_of_yojson
+;;
+
+let confirm_passkey_deletion
+  tr
+  ~user_id
+  ~challenge_id
+  ~verification_method
+  ~ip
+  ?code
+  ?origin
+  ?credential
+  ()
+  =
+  Call.json
+    tr
+    `POST
+    "/user/passkey/delete/confirm"
+    ~body:
+      (Wire.obj
+         [ "userId", s (Some user_id)
+         ; "challengeId", s (Some challenge_id)
+         ; "verificationMethod", vm (Some verification_method)
+         ; "ip", s (Some ip)
+         ; "code", s code
+         ; "origin", s origin
+         ; "credential", credential
+         ])
+    ~name:"passkey deletion"
+    raw
+;;
+
+let start_passkey_approval tr ~user_id ~challenge_id =
+  Call.json
+    tr
+    `POST
+    "/wallets/passkey/approval/start"
+    ~body:(`Assoc [ "userId", `String user_id; "challengeId", `String challenge_id ])
+    ~name:"Sca.Login_challenge.t"
+    Login_challenge.t_of_yojson
+;;

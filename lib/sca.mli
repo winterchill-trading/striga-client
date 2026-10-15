@@ -3,8 +3,8 @@
     USDC addresses that later debits can use with lighter factors).
 
     The application manages passwords and sessions itself and reports failed logins and
-    password resets through {!record_event}. Passkey ceremonies need a browser and are not
-    wrapped here. *)
+    password resets through {!record_event}. Passkey calls are wrapped, but the WebAuthn
+    ceremony between them runs in the user's browser. 2FA reset recovers a lost factor. *)
 
 open! Core
 open! Async
@@ -198,3 +198,53 @@ val reset_2fa_complete
   -> ?mobile:Common.Mobile.t
   -> unit
   -> Reset_2fa.Completed.t Or_error.t Deferred.t
+
+(** {2 Passkeys}
+
+    The WebAuthn ceremony itself runs in the user's browser: these calls hand its
+    [options] to the front end and pass the browser's [credential] (the
+    [PublicKeyCredential] JSON) back. At most 5 passkeys per user (error [100004]). *)
+
+(** WebAuthn creation options ([options], [allowed_origins], [relying_party_id]). *)
+val register_passkey_start
+  :  Transport.t
+  -> user_id:string
+  -> ?display_name:string
+  -> unit
+  -> Login_challenge.t Or_error.t Deferred.t
+
+val register_passkey_complete
+  :  Transport.t
+  -> user_id:string
+  -> origin:string
+  -> credential:Yojson.Safe.t
+  -> Wire.Raw_json.t Or_error.t Deferred.t
+
+(** Step one of removing a passkey: a challenge for another enrolled factor (or the
+    passkey itself), confirmed with {!confirm_passkey_deletion}. *)
+val delete_passkey
+  :  Transport.t
+  -> user_id:string
+  -> credential_id:string
+  -> Login_challenge.t Or_error.t Deferred.t
+
+(** [code] for sms/totp; [origin] and [credential] for a passkey assertion. *)
+val confirm_passkey_deletion
+  :  Transport.t
+  -> user_id:string
+  -> challenge_id:string
+  -> verification_method:Common.Verification_method.t
+  -> ip:string
+  -> ?code:string
+  -> ?origin:string
+  -> ?credential:Yojson.Safe.t
+  -> unit
+  -> Wire.Raw_json.t Or_error.t Deferred.t
+
+(** For a debit challenge (payment, swap, ...) to be approved with a passkey: returns the
+    WebAuthn request options; the assertion then goes to {!Payment.confirm_with_passkey}. *)
+val start_passkey_approval
+  :  Transport.t
+  -> user_id:string
+  -> challenge_id:string
+  -> Login_challenge.t Or_error.t Deferred.t
