@@ -167,3 +167,46 @@ val start_kyc
   -> Kyc_start.t Or_error.t Deferred.t
 
 val kyc_status : Transport.t -> user_id:string -> Kyc.t Or_error.t Deferred.t
+
+(** Acceptance of the Payment Account terms. Together with the application-level Payment
+    Accounts setting it lets EUR accounts receive and send third-party SEPA payments. *)
+module Payment_account_consent : sig
+  type t =
+    { accepted : bool
+    ; date_accepted : string option
+    ; ip : string option
+    ; terms_uri : string option
+    ; terms_version : string option
+    }
+  [@@deriving sexp, equal, yojson]
+
+  type consent = t [@@deriving sexp, equal, yojson]
+
+  module Record : sig
+    type t =
+      { user_id : string
+      ; payment_account_consent : consent option (** [None] when never recorded *)
+      }
+    [@@deriving sexp, equal, yojson]
+  end
+end
+
+(** Record (or, with [~accepted:false], withdraw) the user's consent. Each call replaces the
+    stored record whole. Pass the end user's [ip]: without it the caller's server address is
+    recorded. [date_accepted] (ISO 8601, e.g. ["2026-09-11T12:00:00.000Z"]) defaults to the
+    server time. Allowed before KYC. *)
+val set_payment_account_consent
+  :  Transport.t
+  -> user_id:string
+  -> accepted:bool
+  -> ?terms_version:string
+  -> ?terms_uri:string
+  -> ?date_accepted:string
+  -> ?ip:string
+  -> unit
+  -> Payment_account_consent.Record.t Or_error.t Deferred.t
+
+val payment_account_consent
+  :  Transport.t
+  -> user_id:string
+  -> Payment_account_consent.Record.t Or_error.t Deferred.t

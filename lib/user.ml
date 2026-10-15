@@ -239,3 +239,67 @@ let start_kyc tr ~user_id ?tier () =
 let kyc_status tr ~user_id =
   Call.json tr `GET ("/user/kyc/" ^ user_id) ~name:"User.Kyc.t" Kyc.t_of_yojson
 ;;
+
+module Payment_account_consent = struct
+  type t =
+    { accepted : bool
+    ; date_accepted : string option
+         [@key "dateAccepted"] [@default None] [@yojson_drop_if Option.is_none]
+    ; ip : string option [@default None] [@yojson_drop_if Option.is_none]
+    ; terms_uri : string option
+         [@key "termsUri"] [@default None] [@yojson_drop_if Option.is_none]
+    ; terms_version : string option
+         [@key "termsVersion"] [@default None] [@yojson_drop_if Option.is_none]
+    }
+  [@@deriving sexp, equal, yojson] [@@yojson.allow_extra_fields]
+
+  type consent = t [@@deriving sexp, equal, yojson]
+
+  module Record = struct
+    type t =
+      { user_id : string [@key "userId"]
+      ; payment_account_consent : consent option
+           [@key "paymentAccountConsent"] [@default None]
+      }
+    [@@deriving sexp, equal, yojson] [@@yojson.allow_extra_fields]
+  end
+end
+
+let set_payment_account_consent
+  tr
+  ~user_id
+  ~accepted
+  ?terms_version
+  ?terms_uri
+  ?date_accepted
+  ?ip
+  ()
+  =
+  (* Each call replaces the stored record, so a retry after a lost response writes the
+     same record again. *)
+  Call.json
+    ~idempotent:true
+    tr
+    `POST
+    "/user/payment-account/consent"
+    ~body:
+      (Wire.obj
+         [ "userId", Some (`String user_id)
+         ; "accepted", Some (`Bool accepted)
+         ; "termsVersion", Option.map terms_version ~f:(fun s -> `String s)
+         ; "termsUri", Option.map terms_uri ~f:(fun s -> `String s)
+         ; "dateAccepted", Option.map date_accepted ~f:(fun s -> `String s)
+         ; "ip", Option.map ip ~f:(fun s -> `String s)
+         ])
+    ~name:"User.Payment_account_consent.Record.t"
+    Payment_account_consent.Record.t_of_yojson
+;;
+
+let payment_account_consent tr ~user_id =
+  Call.read
+    tr
+    "/user/payment-account/consent/get"
+    ~body:(`Assoc [ "userId", `String user_id ])
+    ~name:"User.Payment_account_consent.Record.t"
+    Payment_account_consent.Record.t_of_yojson
+;;
