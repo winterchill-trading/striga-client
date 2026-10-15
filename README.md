@@ -158,6 +158,12 @@ wrapped.
 - The EUR and USDC accounts appear seconds to minutes after the simulated KYC approval
   (the banking record is provisioned in the background); the live walk waits up to three
   minutes and records a gap if they never come.
+- EUR accounts are not listed: in the sandbox `/wallets/get/all` and `/wallets/get` return
+  only the BNB, BTC, ETH, POL and SOL accounts. The EUR account id has to come from
+  elsewhere (a webhook or the portal). With that id, `/wallets/account/enrich` and
+  `/wallets/get/account/statement` work, while `/wallets/get/account` answers 403
+  `SCA_REQUIRED` with reason `NO_SESSION`. The EUR enrich response has no `accountId`
+  (it carries `internalAccountId`), so `Wallet.Enrichment.account_id` is optional.
 - Moving crypto needs a balance and the sandbox cannot fund crypto accounts (no faucet,
   Lightning invoices are regtest), so on-chain withdrawals, crypto intraledger transfers
   and Lightning payouts are exercised only up to Striga's balance check
