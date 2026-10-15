@@ -1087,6 +1087,56 @@ module Sca_cmd = struct
              ())
   ;;
 
+  let reset_id = P.flag "-reset" (P.required P.string) ~doc:"ID reset id"
+
+  let reset_start =
+    cmd
+      ~summary:
+        "start a 2FA reset (prints the identity-check token, masked unless -reveal)"
+      (let%map.Command user_id = user
+       and factor =
+         P.flag
+           "-factor"
+           (P.required (P.Arg_type.create Common.Verification_method.of_string))
+           ~doc:"sms|totp|passkey factor to reset"
+       in
+       fun tr -> Sca.reset_2fa_initiate tr ~user_id ~factor)
+      ~to_json:Sca.Reset_2fa.Initiated.yojson_of_t
+      ~to_sexp:Sca.Reset_2fa.Initiated.sexp_of_t
+  ;;
+
+  let reset_status =
+    cmd
+      ~summary:"status of a 2FA reset"
+      (let%map.Command user_id = user
+       and reset_id in
+       fun tr -> Sca.reset_2fa_status tr ~user_id ~reset_id)
+      ~to_json:Sca.Reset_2fa.Status.yojson_of_t
+      ~to_sexp:Sca.Reset_2fa.Status.sexp_of_t
+  ;;
+
+  let reset_complete =
+    cmd
+      ~summary:"complete a 2FA reset after the liveness check (-mobile for sms)"
+      (let%map.Command user_id = user
+       and reset_id
+       and number =
+         P.flag "-mobile" (P.optional P.string) ~doc:"NUMBER new mobile, sms resets"
+       and country_code =
+         P.flag
+           "-country-code"
+           (P.optional_with_default "+372" P.string)
+           ~doc:"+CC (default +372)"
+       in
+       fun tr ->
+         let mobile =
+           Option.map number ~f:(fun number -> { Common.Mobile.country_code; number })
+         in
+         Sca.reset_2fa_complete tr ~user_id ~reset_id ?mobile ())
+      ~to_json:Sca.Reset_2fa.Completed.yojson_of_t
+      ~to_sexp:Sca.Reset_2fa.Completed.sexp_of_t
+  ;;
+
   let command =
     Command.group
       ~summary:"strong customer authentication"
@@ -1100,6 +1150,9 @@ module Sca_cmd = struct
       ; "untrust", trust "untrusting"
       ; "confirm-trust", confirm_trust "trusting"
       ; "confirm-untrust", confirm_trust "untrusting"
+      ; "reset-start", reset_start
+      ; "reset-status", reset_status
+      ; "reset-complete", reset_complete
       ; ( "passkeys"
         , raw_cmd
             ~summary:"list enrolled passkeys"
@@ -1171,6 +1224,19 @@ module Sim_cmd = struct
             (let%map.Command card_id = card
              and active = P.flag "-active" P.no_arg ~doc:" activate" in
              fun tr -> Simulator.card_status tr ~card_id ~active) )
+      ; ( "liveness"
+        , cmd
+            ~summary:"pass the liveness check of a pending 2FA reset"
+            (let%map.Command reset_id = P.flag "-reset" (P.required P.string) ~doc:"ID" in
+             fun tr -> Simulator.reset_2fa_liveness tr ~reset_id)
+            ~to_json:Sca.Reset_2fa.Status.yojson_of_t
+            ~to_sexp:Sca.Reset_2fa.Status.sexp_of_t )
+      ; ( "share-token"
+        , cmd
+            ~summary:"issue a KYC share token (masked unless -reveal)"
+            (P.return (fun tr -> Simulator.kyc_share_token tr))
+            ~to_json:(fun t -> `Assoc [ "shareToken", `String t ])
+            ~to_sexp:Wire.Hidden_string.sexp_of_t )
       ; ( "payment-accounts"
         , raw_cmd
             ~summary:"read the application's Payment Accounts settings"
