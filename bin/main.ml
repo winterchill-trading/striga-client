@@ -1283,7 +1283,12 @@ let webhook_verify =
              ~headers:[ "signature", signature ]
              ~body)
        with
-       | Ok e -> Core.print_s [%sexp (e : Webhook.Event.t)]
+       | Ok e ->
+         Core.print_s [%sexp (e : Webhook.Event.t)];
+         (* The same delivery may also be a typed notice (enrichment, review, ...). *)
+         (match Webhook.notice ~path ~body with
+          | Ok (Some n) -> Core.print_s [%sexp (n : Webhook.Notice.t)]
+          | Ok None | Error _ -> ())
        | Error e ->
          Core.eprint_s [%sexp (e : Error.t)];
          Stdlib.exit 1)
