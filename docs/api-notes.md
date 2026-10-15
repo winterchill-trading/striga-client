@@ -103,6 +103,10 @@ orders.
   4.6 ETH; the client keeps amounts as strings.
 - `POST /wallets/account/enrich` returns deposit addresses (crypto) or IBAN details (EUR);
   repeating it returns the same details. Sandbox BTC is testnet3 (`tb1...`), ETH Sepolia.
+- EUR accounts are not returned by `/wallets/get/all` or `/wallets/get` in the sandbox
+  (they list BNB, BTC, ETH, POL and SOL only). Given the EUR account id from elsewhere
+  (webhook, portal), enrich and statement work; `/wallets/get/account` answers 403
+  `SCA_REQUIRED`, reason `NO_SESSION`. The EUR enrich body has no `accountId`.
 - `blockchainNetwork` is an object in account responses and a plain string in statements.
 
 ## Money movement
