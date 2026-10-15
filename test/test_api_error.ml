@@ -63,3 +63,23 @@ let%expect_test "status and code survive tagging" =
     (status ())
     |}]
 ;;
+
+let%expect_test "SCA session required (sandbox body)" =
+  let e =
+    Api_error.of_response
+      ~meth:"POST"
+      ~path:"/wallets/get/account"
+      ~request_id:"r1"
+      ~redact:Fn.id
+      ~status:403
+      ~body:
+        {|{"message":"SCA_REQUIRED","errorCode":"30070","errorDetails":{"reason":"NO_SESSION"}}|}
+    |> Api_error.to_error
+  in
+  print_s [%sexp (Api_error.is_sca_session_required e : bool)];
+  print_s [%sexp (Api_error.is_sca_session_required (Error.tag e ~tag:"x") : bool)];
+  [%expect {|
+    true
+    true
+    |}]
+;;
