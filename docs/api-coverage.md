@@ -13,6 +13,8 @@ Sources:
   were used only to look for endpoints the reference does not show, and the only ones
   found are listed as such. No official SDK exists in any language.
 
+Summary: 116 consumer-side endpoint rows (some rows group siblings). 55 live, 8 fixture, 32 wrapped but untested, 1 missing, 7 not planned; plus the business, corporate and travel-rule families (about 85 endpoints), not planned.
+
 Status:
 
 - **live**: exercised against the sandbox (the live walk or the CLI), result checked.
@@ -35,12 +37,12 @@ Status:
 | `POST /user/verify-mobile` | verify-mobile-number | `User.verify_mobile` | live |
 | `POST /user/resend-email` | resend-email | `User.resend_email` | wrapped, untested |
 | `POST /user/resend-sms` | resend-sms | `User.resend_sms` | wrapped, untested |
-| `POST /user/kyc/start` | start-kyc | `User.start_kyc` | live |
+| `POST /user/kyc/start` | start-kyc | `User.start_kyc (share token: wrapped)` | live |
 | `GET /user/kyc/{userId}` | get-kyc-status | `User.kyc_status` | live |
-| `POST /user/pii` | fetch-user-pii-data | - | missing |
-| `PATCH /user/update-verified-credentials` | update-verified-credentials | - | missing |
-| `POST /user/payment-account/consent` | setpaymentaccountconsent | - | missing |
-| `POST /user/payment-account/consent/get` | getpaymentaccountconsent | - | missing |
+| `POST /user/pii` | fetch-user-pii-data | `User.pii` | wrapped, untested |
+| `PATCH /user/update-verified-credentials` | update-verified-credentials | `User.update_verified_credentials` | wrapped, untested |
+| `POST /user/payment-account/consent` | setpaymentaccountconsent | `User.set_payment_account_consent` | live |
+| `POST /user/payment-account/consent/get` | getpaymentaccountconsent | `User.payment_account_consent` | live |
 
 ## Wallets and accounts
 
@@ -67,8 +69,9 @@ Status:
 | `POST /wallets/send/initiate/lightning` | initiate-bitcoin-via-lightning | `Payment.lightning_withdrawal` | live |
 | `POST /wallets/account/lightning/topup` | initiate-topup-via-lightning | `Payment.lightning_deposit` | live |
 | `POST /wallets/transaction/confirm` | confirm-transaction-with-otp | `Payment.confirm` | live |
+| `POST /wallets/transaction/confirm (passkey assertion)` | confirm-transaction-with-otp | `Payment.confirm_with_passkey` | wrapped, untested |
 | `POST /wallets/transaction/resend-otp` | resend-otp-for-transaction | `Payment.resend_otp` | fixture |
-| `POST /wallets/passkey/approval/start` | startpasskeyapproval | - | missing |
+| `POST /wallets/passkey/approval/start` | startpasskeyapproval | `Sca.start_passkey_approval` | wrapped, untested |
 | `POST /wallets/whitelist-iban` | whitelist-destination-iban | `Payment.whitelist_iban` | fixture |
 | `POST /wallets/get/whitelisted-ibans` | get-whitelisted-ibans | `Payment.whitelisted_ibans` | fixture |
 | `POST /wallets/deactivate-iban` | deactivate-whitelisted-iban | `Payment.deactivate_iban` | fixture |
@@ -95,8 +98,8 @@ Status:
 | `POST /card/unblock` | unblock-card | `Card.unblock` | live |
 | `POST /card/burn` | burner-cards-close-a-virtual-card | `Card.burn` | live |
 | `POST /card/report-missing` | report-card-lost | `Card.report_missing` | wrapped, untested |
-| `POST /card/replace` | replace-card | - | missing |
-| `POST /card/activate` | activate-card | - | missing |
+| `POST /card/replace` | replace-card | `Card.replace` | live |
+| `POST /card/activate` | activate-card | `Card.activate` | wrapped, untested |
 | `POST /card/activate-anonymous` | activate-anonymous-card | - | not planned |
 | `PATCH /card/limits` | update-card-limits | `Card.update_limits` | live |
 | `PATCH /card/security` | update-card-settings | `Card.update_security` | live |
@@ -122,7 +125,7 @@ Status:
 | `POST /standing-orders/resend-otp` | post_resend-otp | `Standing_order.resend_otp` | wrapped, untested |
 | `POST /standing-orders/resume` | post_resume | `Standing_order.resume` | wrapped, untested |
 | `POST /standing-orders/wallet-create` | post_wallet-create | `Standing_order.wallet_create` | wrapped, untested |
-| `POST /standing-orders/update-fees` | post_update-fees | - | missing |
+| `POST /standing-orders/update-fees` | post_update-fees (no body schema published) | - | missing |
 
 ## SCA, sessions and factors
 
@@ -133,14 +136,14 @@ Status:
 | `POST /user/start/setup-two-factor` | starttotpenrollment | `Sca.start_totp` | live |
 | `POST /user/resume/setup-two-factor` | completetotpenrollment | `Sca.complete_totp` | live |
 | `POST /user/record-event` | recorduserevent | `Sca.record_event` | wrapped, untested |
-| `POST /user/passkey/register/start` | startpasskeyenrollment | - | missing |
-| `POST /user/passkey/register/complete` | completepasskeyenrollment | - | missing |
-| `POST /user/passkey/list` | listpasskeys | `Sca.list_passkeys` | wrapped, untested |
-| `POST /user/passkey/delete` | deletepasskey | - | missing |
-| `POST /user/passkey/delete/confirm` | confirmpasskeydeletion | - | missing |
-| `POST /user/2fa/reset/initiate` | initiatereset2fa | - | missing |
-| `POST /user/2fa/reset/complete` | completereset2fa | - | missing |
-| `POST /user/2fa/reset/status` | getreset2fastatus | - | missing |
+| `POST /user/passkey/register/start` | startpasskeyenrollment | `Sca.register_passkey_start` | wrapped; sandbox app answers 999998 "Passkeys not enabled for application" |
+| `POST /user/passkey/register/complete` | completepasskeyenrollment | `Sca.register_passkey_complete` | wrapped, untested |
+| `POST /user/passkey/list` | listpasskeys | `Sca.list_passkeys` | live |
+| `POST /user/passkey/delete` | deletepasskey | `Sca.delete_passkey` | wrapped, untested |
+| `POST /user/passkey/delete/confirm` | confirmpasskeydeletion | `Sca.confirm_passkey_deletion` | wrapped, untested |
+| `POST /user/2fa/reset/initiate` | initiatereset2fa | `Sca.reset_2fa_initiate` | live (sms) |
+| `POST /user/2fa/reset/complete` | completereset2fa | `Sca.reset_2fa_complete` | live (sms) |
+| `POST /user/2fa/reset/status` | getreset2fastatus | `Sca.reset_2fa_status` | live |
 | `POST /wallets/beneficiary/{iban,address}/trust` | initiateibantrust, initiateaddresstrust | `Sca.trust` | wrapped, untested |
 | `POST /wallets/beneficiary/{iban,address}/untrust` | initiateibanuntrust, initiateaddressuntrust | `Sca.untrust` | wrapped, untested |
 | `POST /wallets/beneficiary/confirm-trust` | confirmbeneficiarytrust | `Sca.confirm_trust` | wrapped, untested |
@@ -151,9 +154,9 @@ Status:
 | Endpoint | Evidence (docs slug) | striga-client | Status |
 | --- | --- | --- | --- |
 | `PATCH /simulate/user/kyc` | sandbox-simulator | `Simulator.kyc` | live |
-| `POST /simulate/kyc/share-token` | sandbox-simulator | - | missing |
+| `POST /simulate/kyc/share-token` | sandbox-simulator | `Simulator.kyc_share_token` | live |
 | `PATCH /simulate/business/kyb` | sandbox-simulator | `Simulator.kyb` | wrapped, untested |
-| `POST /simulate/auth/2fa/reset/liveness` | sandbox-simulator | - | missing |
+| `POST /simulate/auth/2fa/reset/liveness` | sandbox-simulator | `Simulator.reset_2fa_liveness` | live |
 | `PATCH /simulate/accounts/deposit` | sandbox-simulator | `Simulator.deposit` | live |
 | `PATCH /simulate/sepa` | sandbox-simulator | `Simulator.sepa_outcome` | live |
 | `PATCH /simulate/card/status` | sandbox-simulator | `Simulator.card_status` | wrapped, untested |
@@ -184,16 +187,26 @@ Status:
 
 Deliveries go to the configured URL plus a path; `Webhook.parse` routes on it.
 
-| Path | Event `type` values (docs) | striga-client |
-| --- | --- | --- |
-| `/kyc` | KYC status changes (`NOT_STARTED` ... `REJECTED_FINAL`, `SUSPENDED`, `TERMINATED`); `USER_ACCOUNT_ACTION_NEEDED` (missing tax id) | `Kyc`; others `Other` |
-| `/kyb` | KYB status changes | `Other` |
-| `/tx` | ledger rows by `txType`: intra/inter-ledger, SEPA payin and payout (`*_COMPLETED`, `*_FAILED`, `*_DENIED`, `*_REVERTED`), Lightning and on-chain in and out, exchange, fees, `ACCOUNT_ENRICHED`, `PENDING_ACCOUNT_ENRICHMENT` | `Transaction` |
-| `/tx` | card authorizations (14 `CARD_AUTHORIZATION*` kinds) | `Card_transaction` |
-| `/tx` | `TRANSACTION_UNDER_REVIEW`, `STANDING_ORDER_FAILED`, `USER_ACCOUNT_DEBT_ADDED` | `Other` |
-| `/tx` | travel rule (`COUNTERPARTY_DECLARATION_REQUIRED`, `WALLET_VERIFICATION_*`, `BLOCKED_DUE_TO_TRAVEL_RULE`, ...) | `Other` |
-| `/card/watch` | card status (`EXPIRED`, `CLOSED`, `DISPATCHED`), `INCOMPLETE_PROVISIONING`, `SUCCESSFUL_TRANSACTION` | `Card_status` |
-| `/ping` | `TEST` | `Ping` |
+| Path | Event `type` values (docs) | `Webhook.parse` | `Webhook.notice` |
+| --- | --- | --- | --- |
+| `/kyc` | KYC status changes (`NOT_STARTED` ... `REJECTED_FINAL`, `SUSPENDED`, `TERMINATED`) | `Kyc` | - |
+| `/kyc` | `USER_ACCOUNT_ACTION_NEEDED` (missing tax id) | `Kyc` | `User_action_needed` |
+| `/kyb` | KYB status changes | `Other` | `Kyb` (raw) |
+| `/tx` | ledger rows by `txType`: intra/inter-ledger, SEPA payin and payout (`*_COMPLETED`, `*_FAILED`, `*_DENIED`, `*_REVERTED`), Lightning and on-chain in and out, exchange, fees | `Transaction` (unknown `txType` values decode as `Tx_type.Other`) | - |
+| `/tx` | card authorizations (14 `CARD_AUTHORIZATION*` kinds) | `Card_transaction` | - |
+| `/tx` | `ACCOUNT_ENRICHED` (IBAN details) | `Other` | `Account_enriched` |
+| `/tx` | `TRANSACTION_UNDER_REVIEW` | `Transaction` (it carries `txType`) | `Transaction_under_review` |
+| `/tx` | `STANDING_ORDER_FAILED` | `Other` | `Standing_order_failed` |
+| `/tx` | `USER_ACCOUNT_DEBT_ADDED` | `Other` | `Account_debt_added` |
+| `/tx` | travel rule (`COUNTERPARTY_DECLARATION_REQUIRED`, `WALLET_VERIFICATION_*`, `BLOCKED_DUE_TO_TRAVEL_RULE`, ...) | `Other` | `Travel_rule` (raw) |
+| `/tx` | `PENDING_ACCOUNT_ENRICHMENT` (no documented example) | `Other` | - |
+| `/card/watch` | card status (`EXPIRED`, `CLOSED`, `DISPATCHED`), `INCOMPLETE_PROVISIONING`, `SUCCESSFUL_TRANSACTION` | `Card_status` (raw) | - |
+| `/ping` | `TEST` | `Ping` | - |
+
+`Webhook.notice` is separate from `Webhook.Event.t` so that code matching on the event
+variants (the provider adapter) keeps compiling. Webhook deliveries were not received
+live: the sandbox application's webhook URL is not under this client's control, so every
+row above is checked against documented payloads only.
 
 ## Sessions and SCA
 
@@ -203,8 +216,10 @@ Deliveries go to the configured URL plus a path; `Webhook.parse` routes on it.
   error for a missing session is `30070`.
 - Seen in the sandbox (2026-10-15): without a session `/wallets/get` and
   `/wallets/get/all` leave the EUR and USDC accounts out and `/wallets/get/account` on EUR
-  answers 403 `SCA_REQUIRED`, reason `NO_SESSION`; after an SMS login both are listed and
-  the account read answers 200.
+  answers 403 `30070` `SCA_REQUIRED`, reason `NO_SESSION` (`Api_error.is_sca_session_required`);
+  after an SMS login both are listed and the account read answers 200. Completing a 2FA
+  reset revoked the session: EUR and USDC dropped out of the listing again and the
+  account read went back to 403 `30070`.
 - `POST /user/record-event` with `RESET_PASSWORD_COMPLETED` revokes every session; failed
   logins lock the user for growing periods and suspend at 9.
 - Debits are confirmed per operation (`/wallets/transaction/confirm`, or a passkey
