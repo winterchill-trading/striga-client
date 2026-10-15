@@ -191,10 +191,10 @@ module Payment_account_consent : sig
   end
 end
 
-(** Record (or, with [~accepted:false], withdraw) the user's consent. Each call replaces the
-    stored record whole. Pass the end user's [ip]: without it the caller's server address is
-    recorded. [date_accepted] (ISO 8601, e.g. ["2026-09-11T12:00:00.000Z"]) defaults to the
-    server time. Allowed before KYC. *)
+(** Record (or, with [~accepted:false], withdraw) the user's consent. Each call replaces
+    the stored record whole. Pass the end user's [ip]: without it the caller's server
+    address is recorded. [date_accepted] (ISO 8601, e.g. ["2026-09-11T12:00:00.000Z"])
+    defaults to the server time. Allowed before KYC. *)
 val set_payment_account_consent
   :  Transport.t
   -> user_id:string
