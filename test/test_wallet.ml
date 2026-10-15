@@ -92,7 +92,8 @@ let%expect_test "EUR account with banking details (docs example)" =
       (iban (GB10000000000000006392)) (bic (SEOUGB21))
       (account_number (000006392)) (bank_name ("Simulator Bank"))
       (bank_account_holder_name ("ADA SANDBOX")) (provider (SIMULATOR))
-      (payment_type ()) (domestic (false)) (pay_in_reference ())))
+      (payment_type ()) (domestic (false)) (pay_in_reference ())
+      (routing_code_entries (())) (bban ()) (bank_postal_code ())))
     |}]
 ;;
 
