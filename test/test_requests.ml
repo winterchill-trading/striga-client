@@ -464,6 +464,35 @@ let%expect_test "passkeys" =
   return ()
 ;;
 
+let%expect_test "card replace and activate, verified credentials, PII" =
+  let tr =
+    transport
+      [ `Fixture "card-get.json"
+      ; `Fixture "card-get.json"
+      ; `Text "[]"
+      ; `Text {|{"idDocType":"PASSPORT","country":"GBR"}|}
+      ]
+  in
+  let%bind r = Card.replace tr ~card_id:"c1" in
+  ok r;
+  let%bind r = Card.activate tr ~card_id:"c1" ~activation_code:"1234" in
+  ok r;
+  let%bind r =
+    User.update_verified_credentials tr ~user_id:"u1" ~email:"new@example.com"
+  in
+  ok r;
+  let%bind r = User.pii tr ~user_id:"u1" ~user_consent:true ~ip:"192.0.2.1" in
+  ok r;
+  [%expect
+    {|
+    POST /card/replace {"cardId":"c1"}
+    POST /card/activate {"cardId":"c1","activationCode":"1234"}
+    PATCH /user/update-verified-credentials {"userId":"u1","email":"new@example.com"}
+    POST /user/pii {"userId":"u1","userConsent":true,"ip":"192.0.2.1"}
+    |}];
+  return ()
+;;
+
 let%expect_test "the simulator refuses a live host" =
   let tr =
     Transport.create
