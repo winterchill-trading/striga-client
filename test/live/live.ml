@@ -141,14 +141,16 @@ let account_id (w : Wallet.t) currency =
 
 let ignore_d d = Deferred.ignore_m d
 
-(* The EUR leg of the walk: only possible when the application has EUR enabled. *)
+(* The EUR leg of the walk. The sandbox leaves EUR accounts out of /wallets/get and
+   /wallets/get/all, so this runs only when a listed wallet carries one. *)
 let eur_walk tr ~a ~wa ~b ~wb =
   match account_id wa "EUR", account_id wb "EUR" with
   | None, _ | _, None ->
     incr gaps;
     Core.printf
       "gap   EUR walk (enrich IBAN, simulated deposit, swap to USDC, intraledger, SEPA \
-       with OTP): the sandbox application has no EUR account (currencies: %s)\n\
+       with OTP): no EUR account listed by /wallets/get (listed: %s); the EUR account is \
+       not returned there and its id has to come from elsewhere (webhook or portal)\n\
        %!"
       (String.concat ~sep:"," (List.map wa.Wallet.accounts ~f:fst));
     return ()
