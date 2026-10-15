@@ -13,7 +13,7 @@ Sources:
   were used only to look for endpoints the reference does not show, and the only ones
   found are listed as such. No official SDK exists in any language.
 
-Summary: 116 consumer-side endpoint rows (some rows group siblings). 55 live, 8 fixture, 32 wrapped but untested, 1 missing, 7 not planned; plus the business, corporate and travel-rule families (about 85 endpoints), not planned.
+Summary: 103 consumer-side endpoint rows (a few rows group sibling endpoints): 55 live, 8 fixture, 32 wrapped but untested, 1 missing, 7 not planned. The business, corporate and travel-rule families (about 85 endpoints) are not planned.
 
 Status:
 
