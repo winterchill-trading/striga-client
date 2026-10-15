@@ -107,6 +107,24 @@ let onboard tr ~tag =
         >>|? fun k ->
         Option.some_if ([%equal: User.Kyc_status.t option] k.status (Some Approved)) k))
   in
+  (* Without an SCA session the sandbox leaves the EUR and USDC accounts out of
+     /wallets/get and /wallets/get/all (they exist from KYC approval on), so open one with
+     an SMS login before listing. *)
+  let%bind (ch : Sca.Login_challenge.t) =
+    step ("SCA login start (sms) " ^ tag) (fun () ->
+      Sca.login_start tr ~user_id ~verification_method:Sms)
+  in
+  let%bind (_ : Wire.Raw_json.t) =
+    step ("SCA login complete (sms) " ^ tag) (fun () ->
+      Sca.login_complete
+        tr
+        ~user_id
+        ~verification_method:Sms
+        ~ip
+        ?challenge_id:ch.challenge_id
+        ~code
+        ())
+  in
   let%map wallet =
     step ("default wallet provisioned " ^ tag) (fun () ->
       poll ~tries:15 ~every:(Time_ns.Span.of_sec 2.) (fun () ->
@@ -127,16 +145,16 @@ let account_id (w : Wallet.t) currency =
 
 let ignore_d d = Deferred.ignore_m d
 
-(* The EUR leg of the walk. The sandbox leaves EUR accounts out of /wallets/get and
-   /wallets/get/all, so this runs only when a listed wallet carries one. *)
+(* The EUR leg of the walk. It needs the EUR accounts listed, which takes the SCA session
+   opened in [onboard]. *)
 let eur_walk tr ~a ~wa ~b ~wb =
   match account_id wa "EUR", account_id wb "EUR" with
   | None, _ | _, None ->
     incr gaps;
     Core.printf
       "gap   EUR walk (enrich IBAN, simulated deposit, swap to USDC, intraledger, SEPA \
-       with OTP): no EUR account listed by /wallets/get (listed: %s); the EUR account is \
-       not returned there and its id has to come from elsewhere (webhook or portal)\n\
+       with OTP): no EUR account listed by /wallets/get (listed: %s); the sandbox lists \
+       EUR only for a user with an SCA session\n\
        %!"
       (String.concat ~sep:"," (List.map wa.Wallet.accounts ~f:fst));
     return ()
@@ -244,8 +262,8 @@ let walk tr =
        let%bind (_ : Wallet.t option) =
          step "create a second wallet" (fun () -> Wallet.create tr ~user_id:a)
        in
-       (* No wait for EUR: the sandbox never lists the EUR account in /wallets/get, so
-          polling the wallet (the old three-minute wait) only delayed the gap. *)
+       (* No wait for EUR: it exists from KYC approval on and is listed as soon as the
+          user has an SCA session (opened in [onboard]). *)
        let%bind () = eur_walk tr ~a ~wa ~b ~wb in
        let btc_a = Option.value_exn (account_id wa "BTC") in
        let btc_b = Option.value_exn (account_id wb "BTC") in
