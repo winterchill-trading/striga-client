@@ -23,6 +23,9 @@ module Banking_details : sig
     ; payment_type : string option
     ; domestic : bool option
     ; pay_in_reference : string option
+    ; routing_code_entries : Wire.Raw_json.t list option
+    ; bban : string option
+    ; bank_postal_code : string option
     }
   [@@deriving sexp, equal, yojson]
 end

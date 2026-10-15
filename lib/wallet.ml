@@ -26,6 +26,11 @@ module Banking_details = struct
     ; domestic : bool option [@default None] [@yojson_drop_if Option.is_none]
     ; pay_in_reference : string option
          [@key "payInReference"] [@default None] [@yojson_drop_if Option.is_none]
+    ; routing_code_entries : Wire.Raw_json.t list option
+         [@key "routingCodeEntries"] [@default None] [@yojson_drop_if Option.is_none]
+    ; bban : string option [@default None] [@yojson_drop_if Option.is_none]
+    ; bank_postal_code : string option
+         [@key "bankPostalCode"] [@default None] [@yojson_drop_if Option.is_none]
     }
   [@@deriving sexp, equal, yojson] [@@yojson.allow_extra_fields]
 end
